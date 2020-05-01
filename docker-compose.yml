@@ -1,0 +1,88 @@
+version: '3'
+services:
+  photo_web:
+    container_name: photo-web
+    build: .
+    environment:
+      - APP_ENV=local_web_public
+    volumes:
+      - ./web:/var/www/localhost
+    ports:
+      - 17443:443
+      - 3000:3000
+    networks:
+      - default
+      - photo_network
+
+  photo_web_testing:
+    container_name: photo-web-testing
+    build: .
+    environment:
+      - APP_ENV=testing
+    volumes:
+      - ./web:/var/www/localhost
+    ports:
+      - 17999:443
+      - 17998:3000
+    networks:
+      - default
+      - photo_network
+
+  photo_db:
+    container_name: photo-db
+    image: mysql:8.0.19
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpasswd
+      - MYSQL_DATABASE=photo
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - TZ=Asia/Tokyo
+    volumes:
+      - "./setup/mysql:/docker-entrypoint-initdb.d"
+      - "./setup/conf/mysql/my.cnf:/etc/mysql/conf.d/my.cnf"
+      - "./logs/mysql:/var/log/mysql"
+      - "./db-data:/var/lib/mysql"
+    networks:
+      - default
+      - photo_network
+
+  phpmyadmin:
+    container_name: photo-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=0
+      - PMA_HOSTS=photo_db
+    links:
+      - photo_db
+    ports:
+      - 17901:80
+    networks:
+      - default
+      - photo_network
+
+  redis:
+    container_name: photo-redis
+    command: redis-server --appendonly yes
+    image: redis:5.0.8
+    ports:
+        - 17379:6379
+    networks:
+      - default
+      - photo_network
+
+  redis_commander:
+    container_name: photo-redis-commander
+    image: rediscommander/redis-commander:redis-commander-210
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    links:
+      - redis:redis
+    ports:
+      - '17902:8081'
+
+volumes:
+  db-data:
+
+networks:
+  photo_network:
+    external: true
