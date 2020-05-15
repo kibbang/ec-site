@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <RouterLink class="navbar__brand" to="/">
+    <RouterLink class="navbar__brand" to="/test">
       Sakura GlobalMaket
     </RouterLink>
     <div class="navbar__menu">
@@ -10,6 +10,8 @@
           Submit a photo
         </button>
       </div>
+      <router-link to="/product">Product</router-link>
+      <router-link to="/product/list">ProductList</router-link>
       <span v-if="isLogin" class="navbar__item">
         {{ username }}
       </span>

@@ -10,7 +10,6 @@
           Submit a photo
         </button>
       </div>
-      <router-link to="/product">Product</router-link>
       <span v-if="isLogin" class="navbar__item">
         {{ username }}
       </span>
@@ -18,6 +17,14 @@
         <RouterLink class="button button--link" to="/login">
           Login / Register
         </RouterLink>
+        <select v-model="selected">
+          <option disabled value="">Select</option>
+          <option>Cart</option>
+          <option>B</option>
+          <option>C</option>
+        </select>
+        
+ 
       </div>
     </div>
   </nav>

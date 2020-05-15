@@ -1,31 +1,38 @@
 <template>
 <div>
 	<div>
-	<h1>Product Information</h1>
-	<ul>
-		<li>Product Id: {{ product.id }}</li>
-		<li>Product Name: {{ product.name }}</li>
-		<li>Product Description: {{ proudct.description }}</li>
-	</ul>
+		<AdHeader></AdHeader>
 	</div>
-	
-	
+	<h1>Product List</h1>
+	<ul>
+		<li v-for="product in products" v-text="product.name" v-bind:key="product.id"></li>
+	</ul>
 </div>
 </template>
 
+
 <script>
+import AdHeader from '../../components/AdHeader.vue';
+
 	export default {
+
+		components:{ 
+			AdHeader
+		},
+
 		data(){
-			return {
-				id: this.$route.params.id,
-				product: ''
+			return{
+				products:[]
 			}
 		},
 		created(){
-			axios.get('/api/product/' + this.id)
-			.then(response => this.product = response.data.product)
-			.catch(erorr => console.log(error));
+			axios.get('/api/product')
+				.then(response=>{
+					this.products = response.data.products;
+				})
+				.catch(error => {
+					console.log(error)
+				});
 		}
-
 	}
 </script>

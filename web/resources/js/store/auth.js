@@ -9,6 +9,7 @@ const state = {
 
 const getters = {
   check: state => !! state.user,
+  admin: (state, getters) => getters.check ? !! state.user.is_admin : false,
   username: state => state.user ? state.user.name : ''
 }
 
@@ -54,6 +55,7 @@ const actions = {
 
     if (response.status === OK) {
       context.commit('setApiStatus', true)
+      console.log(response.data)
       context.commit('setUser', response.data)
       return false
     }
