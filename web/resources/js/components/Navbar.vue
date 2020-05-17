@@ -17,12 +17,7 @@
         <RouterLink class="button button--link" to="/login">
           Login / Register
         </RouterLink>
-        <select v-model="selected">
-          <option disabled value="">Select</option>
-          <option>Cart</option>
-          <option>B</option>
-          <option>C</option>
-        </select>
+
         
  
       </div>

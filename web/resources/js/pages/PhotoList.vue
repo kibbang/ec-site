@@ -19,14 +19,14 @@ export default {
     ProductCard
   },
 
-   computed:{
-     products() {
-       return this.$store.state.products;
-     }
-   },
+  computed:{
+    products() {
+      return this.$store.products;
+    }
+  },
 
-   mounted() {
-   this.$store.dispatch('product/getProducts');
+  mounted() {
+    this.$store.dispatch('product/getProducts');
   }
 };
 </script>

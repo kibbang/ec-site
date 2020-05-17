@@ -17,4 +17,9 @@ class ProductImage extends Model
         {
             return $this->belongsTo(Product::class);
         }
+
+    public function getUrlAttribute()
+      {
+        return asset("storage/product_images/{$this->filename}");
+      }
 }
