@@ -9,7 +9,10 @@ import Test from './pages/Test.vue'
 import Product from './pages/products/Product.vue'
 import ProductRegister from './pages/products/Register.vue'
 import ProductList from './pages/products/ProductDetail.vue'
-import ProductDetail from './pages/UserProduct.vue'
+import ProductDetail from './pages/products/ProductInfo.vue'
+import ProductEdit from './pages/products/ProductEdit.vue'
+
+import UserEdit from './pages/UserEdit.vue'
 import store from './store'
 
 // VueRouterプラグインを使用する
@@ -26,6 +29,11 @@ const routes = [
   {
     path: '/test',
     component: Test
+  },
+
+  {
+    path: '/user/:id/edit',
+    component: UserEdit
   },
 
   {
@@ -46,8 +54,11 @@ const routes = [
   {
     path: '/product/:id',
     component: ProductDetail,
-    props: true
+  },
 
+  {
+    path: '/product/:id/edit',
+    component: ProductEdit,
   },
 
   {

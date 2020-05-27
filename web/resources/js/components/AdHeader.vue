@@ -11,7 +11,8 @@
         </button>
       </div>
       <router-link to="/product">Product</router-link>
-      <router-link to="/product/list">ProductList</router-link>
+      <br>
+      <router-link to="/product/list">ProductUpdate</router-link>
       <span v-if="isLogin" class="navbar__item">
         {{ username }}
       </span>

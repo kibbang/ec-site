@@ -5,7 +5,7 @@
     </div>
     <h1>ProductRegister</h1>
     <form>
-      <div class="form-gruop">
+      <div class="form-group">
         <label for="name">Name:</label>
         <input v-model="product.name">
       </div>
@@ -26,7 +26,7 @@
       <br>
 
       <div class="form-group">
-        <label for="price">Quantity:</label>
+        <label for="quntity">Quantity:</label>
         <input v-model="product.quntity">
       </div>
 
@@ -82,7 +82,7 @@ export default {
       })
       .then(response => {
         this.product = response.data.product;
-        //this.$router.push('/product/list')
+        this.$router.push('/product/list')
       })
       .catch(error => console.log(error));
     },

@@ -3,9 +3,13 @@ use App\Cart;
 use App\Product;
 use App\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use SebastianBergmann\Environment\Console;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 use Illuminate\Support\Facades\Storage;
+
+//use Symfony\Component\Routing\Route;
+
 //use DB;
 //use Exception;
 //use Symfony\Component\Routing\Route;
@@ -21,7 +25,6 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 // ログインユーザー
 Route::get('/user', fn() => Auth::user())->name('user');
-
 
 
 /*Route::get('/products', 'ProductsController@index');
@@ -56,11 +59,13 @@ Route::prefix('/product')->group(function() {
 
     Route::get('/list',function (Request $request) {
     
-        $products = App\Product::all($request->array_product);
-        
+        $products = DB::table('products')
+        ->join('product_images','product_images.product_id','products.id')
+        ->select('products.*','product_images.image_url')
+        ->get();
+
         return response()->json(['products' => $products]);
-    
-    });
+       });
 
     Route::post('/imageupload',function(){
         $request = request()->all();
@@ -103,6 +108,54 @@ Route::prefix('/product')->group(function() {
         
         return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
     });
+
+
+
+    Route::get('/list/{product}', function($id){
+        $product = DB::table('products')
+        ->join('product_images','product_images.product_id','products.id')
+        ->select('products.*','product_images.image_url')
+        ->where('products.id',$id)
+        ->get();
+
+        return response()->json(['product' => $product]);
+    });
+
+    Route::post('/up', function(Request $request){
+        $productInfo = $request['product'];
+
+        $product = Product::find($productInfo['id']); 
+        \Log::debug($product);
+
+        //\Log::debug( $productInfo['name']); 
+        $product-> update([
+            'name' => $productInfo['name'],
+            'quntity' => $productInfo['quntity'],
+            'price' => $productInfo['price'],
+            'description' => $productInfo['description']
+            ]);
+        //\Log::debug( $productInfo); 
+             
+        return response()->json(['product' => $product]);
+    
+    })->where('productID','[0-9]+');
+
+    Route::get('{productId}', function(Request $request, string $productId){
+        $product = DB::table('products')
+        ->join('product_images','product_images.product_id','products.id')
+        ->select('products.*','product_images.image_url')
+        ->where('products.id',$productId)
+        ->first();
+
+        Log::debug($request->all());
+
+        return response()->json(['product' => $product]);
+
+
+    })->where('productId', '[0-9]+');
+
+        
+    
 });
 
 
@@ -160,3 +213,19 @@ Route::prefix('/product')->group(function() {
 
 //Route::resource('products', 'ProductsController');
 
+Route::patch('/user/{user}', function(App\User $user,Request $request){
+
+	$user->update($request->user);
+
+	return response()->json(['user' => $user]);
+
+});
+
+Route::get('/image',function (Request $request) {
+    
+    //$products = App\Product::all();
+    $product_images = App\ProductImage::all();
+    
+    return response()->json(['product_images' => $product_images]);
+
+});

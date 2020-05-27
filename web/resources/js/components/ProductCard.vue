@@ -6,15 +6,15 @@
         <div class = "card-body">
           <h4 class="card-title">
             <a href = "#">Product title</a>
-            </h4>
-            <strong>$23</strong>
-            <p class = "card-text">Description</p>
+          </h4>
+          <strong>$23</strong>
+          <p class = "card-text">Description</p>
         </div>
         <div class="px-4 pb-3">
           <button type="button" class = "btn btn-danger">Add to Cart</button>
-          </div>
+        </div>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 

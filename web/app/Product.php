@@ -2,18 +2,21 @@
 
 namespace App;
 
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     //
     protected $fillable=[
+        'id',
         'name',
         'description',
         'price',
         'quntity',
         'shop_id'
     ];
+    protected $primaryKey = 'id';
 
    /* public function register(array $attributes)
     {
@@ -32,5 +35,7 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
+   
 
 }

@@ -1,0 +1,33 @@
+<template>
+  <div>
+	  <div>
+	    <h1>Product Information</h1>
+	    <ul style="list-style: none" v-for="product in product" :key="product.id">
+			  <img class="w-100" :src="product.image_url" width=150px, height=100px  alt />
+		    <li>Product Name: {{ product.name }}</li>
+		    <li>Product Price($): {{ product.price }}</li>
+		    <li>Product Description: {{ product.description }}</li>
+			<router-link class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
+	    </ul>
+	  </div>
+  </div>
+</template>
+
+<script>
+	export default {
+		data(){
+			return {
+				id: this.$route.params.id,
+				product:[]
+			}
+		},
+		created(){
+			axios.get('/api/product/list/' + this.id) 
+      		.then(response => this.product = response.data.product)
+			.catch(error => 
+				console.log(error)
+			);
+		}
+
+	}
+</script>
