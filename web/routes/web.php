@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,10 @@ Route::get('/{any?}', fn() => view('index'))->where('any', '.+');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+/*Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/user', 'UserController@index')->name('user');
+Route::get('/admin', 'AdminController@index')->name('admin');
+*/
 
 //Auth::routes();
 
@@ -39,3 +43,4 @@ Route::group(['middleware' => ['auth','admin']],function(){
 
 });
 
+Route::post('upload','ImageController@upload')->name('upload');

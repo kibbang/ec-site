@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -78,21 +78,29 @@ export default {
       }
     }
   },
-  computed: mapState({
-    apiStatus: state => state.auth.apiStatus,
-    loginErrors: state => state.auth.loginErrorMessages,
-    registerErrors: state => state.auth.registerErrorMessages
-  }),
+  computed: {
+    ...mapState({
+      apiStatus: state => state.auth.apiStatus,
+      loginErrors: state => state.auth.loginErrorMessages,
+      registerErrors: state => state.auth.registerErrorMessages
+    }),
+    ...mapGetters({
+      isAdmin: 'auth/admin'
+    })
+  },
   methods: {
     async login () {
       // authストアのloginアクションを呼び出す
       await this.$store.dispatch('auth/login', this.loginForm)
+      console.log(this.apiStatus, this.isAdmin)
       if (this.apiStatus) {
-        // トップページに移動する
-        this.$router.push('/')
-      }
-      else if(user.is_admin == true ){
-        this.$router.push('/test')
+        if(this.isAdmin) {
+          // 管理者は管理ページに遷移
+          this.$router.push('/test')
+        } else {
+          // 一般ユーザーはトップページに移動する
+          this.$router.push('/')
+        }
       }
     },
     async register () {

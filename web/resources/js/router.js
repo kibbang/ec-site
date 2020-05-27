@@ -6,7 +6,10 @@ import PhotoList from './pages/PhotoList.vue'
 import Login from './pages/Login.vue'
 import SystemError from './pages/error/System.vue'
 import Test from './pages/Test.vue'
-
+import Product from './pages/products/Product.vue'
+import ProductRegister from './pages/products/Register.vue'
+import ProductList from './pages/products/ProductDetail.vue'
+import ProductDetail from './pages/UserProduct.vue'
 import store from './store'
 
 // VueRouterプラグインを使用する
@@ -23,6 +26,28 @@ const routes = [
   {
     path: '/test',
     component: Test
+  },
+
+  {
+    path: '/product',
+    component: Product
+  },
+
+  {
+    path:'/product/list',
+    component: ProductList
+  },
+
+  {
+    path: '/product/register',
+    component: ProductRegister
+  },
+
+  {
+    path: '/product/:id',
+    component: ProductDetail,
+    props: true
+
   },
 
   {
@@ -43,11 +68,13 @@ const routes = [
 
 ]
 
+
 // VueRouterインスタンスを作成する
 const router = new VueRouter({
   mode: 'history',
   routes
     
+  
 })
 
 // VueRouterインスタンスをエクスポートする
