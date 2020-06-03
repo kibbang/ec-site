@@ -9,17 +9,22 @@
           <i class="icon ion-md-add"></i>
           Submit a photo
         </button>
+        <router-link v-if="isLogin" to="/cart">
+          Cart
+        </router-link>
       </div>
-      <span v-if="isLogin" class="navbar__item">
+      <div>
+        <span v-if="isLogin" class="navbar__item">
         {{ username }}
-      </span>
+        </span>
+      </div>
+      <router-link v-if="isLogin" to="/card">
+       Card
+      </router-link>
       <div v-else class="navbar__item">
         <RouterLink class="button button--link" to="/login">
           Login / Register
-        </RouterLink>
-
-        
- 
+        </RouterLink> 
       </div>
     </div>
   </nav>

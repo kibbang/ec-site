@@ -82,7 +82,7 @@ export default {
       })
       .then(response => {
         this.product = response.data.product;
-        this.$router.push('/product/list')
+        this.$router.push('/product/test')
       })
       .catch(error => console.log(error));
     },

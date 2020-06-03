@@ -96,7 +96,7 @@ export default {
       if (this.apiStatus) {
         if(this.isAdmin) {
           // 管理者は管理ページに遷移
-          this.$router.push('/test')
+          this.$router.push('/product')
         } else {
           // 一般ユーザーはトップページに移動する
           this.$router.push('/')

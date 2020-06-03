@@ -5,10 +5,8 @@
 
     </div>
 	<h1>Product</h1>
-	<ul>
-		<li v-for="product in products" v-text="product.name" v-bind:key="product.id"></li>
-	</ul>
 	<router-link class="btn btn-success" :to="`/product/register`">Register</router-link>
+	<router-link class="btn btn-success" :to="`/test`">Adimin</router-link>
 </div>
 </template>
 

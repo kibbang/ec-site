@@ -11,9 +11,11 @@ import ProductRegister from './pages/products/Register.vue'
 import ProductList from './pages/products/ProductDetail.vue'
 import ProductDetail from './pages/products/ProductInfo.vue'
 import ProductEdit from './pages/products/ProductEdit.vue'
+import Shop from './pages/Shop.vue'
 
-import UserEdit from './pages/UserEdit.vue'
 import store from './store'
+
+import Card from './pages/Card.vue'
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -30,12 +32,6 @@ const routes = [
     path: '/test',
     component: Test
   },
-
-  {
-    path: '/user/:id/edit',
-    component: UserEdit
-  },
-
   {
     path: '/product',
     component: Product
@@ -59,6 +55,11 @@ const routes = [
   {
     path: '/product/:id/edit',
     component: ProductEdit,
+  },
+
+  {
+    path: '/card',
+    component: Card,
   },
 
   {

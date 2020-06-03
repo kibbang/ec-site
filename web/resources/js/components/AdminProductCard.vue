@@ -8,11 +8,10 @@
 			      <ul style="list-style: none" v-for="product in products" :key="product.id">
               <li>
                 <img class="w-100" :src="product.image_url" width=150px, height=100px  alt />
-                <p>Product Name : {{ product.name }}</p>
+                <p>Product Name : {{ product.name}}</p>
                 <p>Product Price($) : {{ product.price }}</p>
                 <router-link class="btn btn-success" :to="`/product/${product.id}`">Product detail</router-link>
-              </li>
-            	
+              </li>           	
 				    </ul>
           </h4>
         </div>
@@ -23,20 +22,7 @@
 
 <script>
 export default {
-  data(){
-    return{
-      products:[]
-    }
-  },
-  created(){
-			axios.get('/api/product/list')
-				.then(response=>{
-					this.products = response.data.products;
-				})
-				.catch(error => {
-					console.log(error)
-				});
-  },	
+   props:['products'],
 }
 </script>>
 

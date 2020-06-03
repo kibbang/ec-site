@@ -1,32 +1,59 @@
-<template>
-  <div class="card-deck">
-    <product-card v-for="product in products" :key="product.id" :product="product" />
-    <product-card />
-    <product-card />
-    <product-card />
-    <product-card />
-    <product-card />
-    <product-card />
-    <product-card />
+<<template>
+  <div>
+    <div class="col-md-4">
+      <form>
+        <div class="input-group">
+          <input type="text" v-model="search" class="form-control">
+          <span class="input-group-prepend">
+            <button @click.prevent="searchProduct()" class="btn btn-primary"><i class="fa fa-search">Search</i></button>
+          </span>            
+        </div>
+      </form>
+    </div>
+    <ProductCard :products="products"/>
   </div>
 </template>
 
 <script>
+
 import ProductCard from "../components/ProductCard.vue"
 export default {
-  
   components: {
     ProductCard
   },
-
-  computed:{
-    products() {
-      return this.$store.products;
+	data(){
+		return {
+      search:'',
+      products:[]
     }
   },
-
-  mounted() {
-    this.$store.dispatch('product/getProducts');
+  methods:{
+    
+		searchProduct(){
+		  console.log(this.search)
+      axios.get('/api/product/list',{
+        params:{
+          search: this.search
+        }
+      })
+      .then(response => {
+        this.products = response.data.products
+        console.log(response.data.products);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
+  },  
+  created(){
+    console.log('aaa');
+		axios.get('/api/product/list')
+		.then(response=>{
+			this.products = response.data.products;
+		})
+		.catch(error => {
+			console.log(error)
+		});
   }
-};
+} 	
 </script>

@@ -58,14 +58,17 @@ Route::prefix('/product')->group(function() {
     });
 
     Route::get('/list',function (Request $request) {
-    
-        $products = DB::table('products')
+        $data = $request->all();
+        $query = DB::table('products')
         ->join('product_images','product_images.product_id','products.id')
-        ->select('products.*','product_images.image_url')
-        ->get();
+        ->select('products.*','product_images.image_url');
+        if (!empty($data['search'])) {
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+        $products = $query->get();
 
         return response()->json(['products' => $products]);
-       });
+    });
 
     Route::post('/imageupload',function(){
         $request = request()->all();
@@ -133,7 +136,7 @@ Route::prefix('/product')->group(function() {
             'quntity' => $productInfo['quntity'],
             'price' => $productInfo['price'],
             'description' => $productInfo['description']
-            ]);
+        ]);
         //\Log::debug( $productInfo); 
              
         return response()->json(['product' => $product]);
@@ -154,8 +157,18 @@ Route::prefix('/product')->group(function() {
 
     })->where('productId', '[0-9]+');
 
-        
-    
+   /* Route::get('/search',function (Request $request) {
+        \Log::debug($request->get('aaa'));
+        $search = $request->get('/search');
+        //\Log::debug($request->get('/search'));
+        $product = DB::table('products')
+        ->select('products.*')
+        ->where('name', 'like', '%'.$search.'%')
+        ->first();
+        //\Log::debug($request->get('/search'));
+        return response()->json(['product' => $product]);
+    });*/
+
 });
 
 
@@ -213,19 +226,19 @@ Route::prefix('/product')->group(function() {
 
 //Route::resource('products', 'ProductsController');
 
-Route::patch('/user/{user}', function(App\User $user,Request $request){
+//Route::patch('/user/{user}', function(App\User $user,Request $request){
 
-	$user->update($request->user);
+	//$user->update($request->user);
 
-	return response()->json(['user' => $user]);
+	//return response()->json(['user' => $user]);
 
-});
+//});
 
-Route::get('/image',function (Request $request) {
+/*Route::get('/image',function (Request $request) {
     
     //$products = App\Product::all();
     $product_images = App\ProductImage::all();
     
     return response()->json(['product_images' => $product_images]);
 
-});
+});*/
