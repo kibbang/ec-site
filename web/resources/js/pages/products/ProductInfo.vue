@@ -7,8 +7,9 @@
 		    <li>Product Name: {{ product.name }}</li>
 		    <li>Product Price($): {{ product.price }}</li>
 		    <li>Product Description: {{ product.description }}</li>
-			<router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
-      <button v-else class="btn btn-primary">Buy</button> 
+			  <router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
+      	<button v-else class="btn btn-primary">Buy</button>
+        <button v-if="!isAdmin" class="btn btn-danger">Add Cart</button> 
       
 	    </ul>
 	  </div>

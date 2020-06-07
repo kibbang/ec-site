@@ -3,6 +3,7 @@ use App\Cart;
 use App\Product;
 use App\ProductImage;
 use Illuminate\Http\Request;
+use App\Card;
 use Illuminate\Support\Facades\DB;
 use SebastianBergmann\Environment\Console;
 use Symfony\Component\HttpKernel\HttpCache\Store;
@@ -171,8 +172,24 @@ Route::prefix('/product')->group(function() {
 
 });
 
+Route::post('/card', function(Request $request){
+	$data = $request['card'];
+	
+	$user = Auth::user();
 
+	$card = App\Card::create([
+		'user_id' => $user->id,
+		'number' => $data['number'],
+		'security_code' => $data['security_code']
+	]);
 
+	\Log::debug($card);
+
+	return response()->json(['card' => $card]);
+
+});
+
+//Route::post('/card', 'CardController@register');
 
 
 /*Route::post('product/register',function(){
