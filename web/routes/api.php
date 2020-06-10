@@ -207,7 +207,6 @@ Route::post('/cart',function(Request $request)
 
 Route::get('/cart',function(Request $request)
 {   
-    \Log::debug(request()->all());
     
     $cartInfo = DB::table('carts')
     ->join('products','products.id','carts.product_id')
@@ -215,9 +214,16 @@ Route::get('/cart',function(Request $request)
     ->select('carts.*', 'products.name', 'products.price', 'product_images.image_url');
 
     $carts = $cartInfo->get();
-    \Log::debug($carts);
 
     return response()->json(['carts'=>$carts]);
+});
+
+Route::delete('/cart/{cart}', function(App\Cart $cart){
+
+	$cart->delete();
+
+	return response()->json(['message' => 'delete successfully']);
+
 });
 
 
