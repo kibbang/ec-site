@@ -2,6 +2,7 @@
 use App\Cart;
 use App\Product;
 use App\ProductImage;
+use App\Card;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use SebastianBergmann\Environment\Console;
@@ -119,7 +120,7 @@ Route::prefix('/product')->group(function() {
         ->join('product_images','product_images.product_id','products.id')
         ->select('products.*','product_images.image_url')
         ->where('products.id',$id)
-        ->get();
+        ->first();
 
         return response()->json(['product' => $product]);
     });
@@ -172,7 +173,7 @@ Route::prefix('/product')->group(function() {
 });
 
 Route::post('/card', function(Request $request){
-	$data = $request['card'];
+    $data = $request['card'];
 	
 	$user = Auth::user();
 
@@ -186,6 +187,37 @@ Route::post('/card', function(Request $request){
 
 	return response()->json(['card' => $card]);
 
+});
+
+
+Route::post('/cart',function(Request $request)
+{
+    $user = Auth::user();
+   
+    $product = $request['product']; //리퀘스트 요청한 product의 정보가 배열형태로 들어가있음
+   
+    $cart = App\Cart::create([
+        'user_id' => $user->id,
+        'product_id' => $product['id'],
+        'quntitiy' => 1
+    ]);
+
+	return response()->json(['cart' => $cart]);
+});
+
+Route::get('/cart',function(Request $request)
+{   
+    \Log::debug(request()->all());
+    
+    $cartInfo = DB::table('carts')
+    ->join('products','products.id','carts.product_id')
+    ->join('product_images', 'product_images.product_id', 'products.id')
+    ->select('carts.*', 'products.name', 'products.price', 'product_images.image_url');
+
+    $carts = $cartInfo->get();
+    \Log::debug($carts);
+
+    return response()->json(['carts'=>$carts]);
 });
 
 

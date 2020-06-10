@@ -33,10 +33,8 @@ export default {
       products:[]
     }
   },
-  methods:{
-    
+  methods:{    
 		searchProduct(){
-		  console.log(this.search)
       axios.get('/api/product/list',{
         params:{
           search: this.search
@@ -52,7 +50,6 @@ export default {
     },
   },  
   created(){
-    console.log('aaa');
 		axios.get('/api/product/list')
 		.then(response=>{
 			this.products = response.data.products;

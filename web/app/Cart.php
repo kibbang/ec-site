@@ -8,8 +8,11 @@ class Cart extends Model
 {
     //
 
-    protected $casts = [
-        'quntity' => 'integer',
+    protected $fillable=[
+        'id',
+        'user_id',
+        'product_id',
+        'quntitiy'
     ];
 
     public function product()
