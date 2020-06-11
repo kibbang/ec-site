@@ -33,13 +33,13 @@ export default {
   methods:{
     CardRegister(){
       axios.post('/api/card',{
-          card: this.card,
-				})
-				.then(response => {
-					this.card = response.data.card;
-          this.$router.push('/')
-				})
-				.catch(error => console.log(error));
+        card: this.card,
+			})
+			.then(response => {
+			  this.card = response.data.card;
+        this.$router.push('/')
+			})
+			.catch(error => console.log(error));
     }
   }
 

@@ -8,16 +8,20 @@ use App\Product;
 class ProductsController extends Controller
 {
     //Product Register
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $data = $request->all();
 
-        try {
+        try
+        {
             DB::transaction(function () use($data) {
                 $product = App\Product::create($data['product']);
                 $data['product_image']['product_id'] = $product->id;
                 App\ProductImage::create($data['product_image']);
             });
-        } catch (Exception $e) {
+        } 
+        catch (Exception $e)
+        { 
             throw $e;
         }
         
@@ -25,11 +29,12 @@ class ProductsController extends Controller
     
     }
     //
-    public function list(Request $request){
+    public function list(Request $request)
+    {
         $data = $request->all();
         $query = DB::table('products')
-        ->join('product_images','product_images.product_id','products.id')
-        ->select('products.*','product_images.image_url');
+        ->join('product_images', 'product_images.product_id', 'products.id')
+        ->select('products.*', 'product_images.image_url');
         if (!empty($data['search'])) {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
@@ -38,9 +43,9 @@ class ProductsController extends Controller
         return response()->json(['products' => $products]);
     }
     //
-    public function image_upload(){
-        $request = request()->all();
-        \Log::debug(request());
+    public function imageUpload(Request $request)
+    {
+        
         //$file_name = $request->file->getClientOriginalName();
        // \Log::debug(getClientOriginalName());
         //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
@@ -48,7 +53,8 @@ class ProductsController extends Controller
         $base64Context = $request['file_info'];
         $dir = '/';
 
-        try {
+        try 
+        {
             preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
             $extension = $matches[1];
 
@@ -62,7 +68,9 @@ class ProductsController extends Controller
 
             Storage::disk($storage)->put($path, $fileData);
 
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             Log::error($e);
             return null;
         }
@@ -80,46 +88,43 @@ class ProductsController extends Controller
         return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
     }
     //
-    public function detail($id){
+    public function detail($id)
+    {
         $product = DB::table('products')
-        ->join('product_images','product_images.product_id','products.id')
-        ->select('products.*','product_images.image_url')
-        ->where('products.id',$id)
+        ->join('product_images', 'product_images.product_id', 'products.id')
+        ->select('products.*', 'product_images.image_url')
+        ->where('products.id', $id)
         ->get();
 
         return response()->json(['product' => $product]);
     }
     //
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $productInfo = $request['product'];
 
         $product = Product::find($productInfo['id']); 
-        \Log::debug($product);
-
-        //\Log::debug( $productInfo['name']); 
-        $product-> update([
+        
+        $product->update([
             'name' => $productInfo['name'],
             'quntity' => $productInfo['quntity'],
             'price' => $productInfo['price'],
             'description' => $productInfo['description']
         ]);
-        //\Log::debug( $productInfo); 
+        where('productID','[0-9]+');
              
         return response()->json(['product' => $product]);
-        where('productID','[0-9]+');
+        
     }
     //
-    public function productId(Request $request, string $productId){
+    public function productInfo(Request $request, string $productId){
         $product = DB::table('products')
-        ->join('product_images','product_images.product_id','products.id')
-        ->select('products.*','product_images.image_url')
-        ->where('products.id',$productId)
-        ->first();
-
-        Log::debug($request->all());
-
+        ->join('product_images', 'product_images.product_id', 'products.id')
+        ->select('products.*', 'product_images.image_url')
+        ->where('products.id', $productId)
+        ->first()
+        ->where('productId', '[0-9]+');
         return response()->json(['product' => $product]);
-        where('productId', '[0-9]+');
     }
 
 }

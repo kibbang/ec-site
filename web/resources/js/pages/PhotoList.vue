@@ -28,9 +28,7 @@ export default {
     }
   },
   methods:{
-    
-		searchProduct(){
-		  console.log(this.search)
+    searchProduct(){
       axios.get('/api/product/list',{
         params:{
           search: this.search

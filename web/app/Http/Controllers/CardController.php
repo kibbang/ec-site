@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use APP\Card;
 
 class CardController extends Controller
 {
     //
-    public function register(Request $request){
+	public function register(Request $request)
+	{
         
-    $data = $request['card'];
+    	$data = $request['card'];
 	
-	$user = Auth::user();
+		$user = Auth::user();
 
-	$card = App\Card::create([
-		'user_id' => $user->id,
-		'number' => $data['number'],
-		'security_code' => $data['security_code']
-	]);
+		$card = Card::create([
+			'user_id' => $user->id,
+			'number' => $data['number'],
+			'security_code' => $data['security_code']
+		]);
 
-	\Log::debug($card);
-
-	return response()->json(['card' => $card]);
+		return response()->json(['card' => $card]);
     }
 }
