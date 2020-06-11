@@ -35,7 +35,8 @@ export default {
     cartDelete(index, id){
 			axios.delete('/api/cart/' + id)
 			.then(response => {
-				this.users.slice(id, 1)
+        this.carts.slice(id, 1)
+        this.$router.push('/')
 		  })
 			.catch(error => console.log(error));
 		},

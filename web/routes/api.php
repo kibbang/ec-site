@@ -2,8 +2,8 @@
 use App\Cart;
 use App\Product;
 use App\ProductImage;
-use App\Card;
 use Illuminate\Http\Request;
+use App\Card;
 use Illuminate\Support\Facades\DB;
 use SebastianBergmann\Environment\Console;
 use Symfony\Component\HttpKernel\HttpCache\Store;
@@ -61,8 +61,8 @@ Route::prefix('/product')->group(function() {
     Route::get('/list',function (Request $request) {
         $data = $request->all();
         $query = DB::table('products')
-        ->join('product_images','product_images.product_id','products.id')
-        ->select('products.*','product_images.image_url');
+        ->join('product_images', 'product_images.product_id', 'products.id')
+        ->select('products.*', 'product_images.image_url');
         if (!empty($data['search'])) {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
@@ -117,9 +117,9 @@ Route::prefix('/product')->group(function() {
 
     Route::get('/list/{product}', function($id){
         $product = DB::table('products')
-        ->join('product_images','product_images.product_id','products.id')
-        ->select('products.*','product_images.image_url')
-        ->where('products.id',$id)
+        ->join('product_images', 'product_images.product_id', 'products.id')
+        ->select('products.*', 'product_images.image_url')
+        ->where('products.id', $id)
         ->first();
 
         return response()->json(['product' => $product]);
@@ -146,12 +146,12 @@ Route::prefix('/product')->group(function() {
 
     Route::get('{productId}', function(Request $request, string $productId){
         $product = DB::table('products')
-        ->join('product_images','product_images.product_id','products.id')
-        ->select('products.*','product_images.image_url')
-        ->where('products.id',$productId)
+        ->join('product_images', 'product_images.product_id', 'products.id')
+        ->select('products.*', 'product_images.image_url')
+        ->where('products.id', $productId)
         ->first();
 
-        Log::debug($request->all());
+       
 
         return response()->json(['product' => $product]);
 
@@ -173,7 +173,7 @@ Route::prefix('/product')->group(function() {
 });
 
 Route::post('/card', function(Request $request){
-    $data = $request['card'];
+	$data = $request['card'];
 	
 	$user = Auth::user();
 
@@ -183,12 +183,9 @@ Route::post('/card', function(Request $request){
 		'security_code' => $data['security_code']
 	]);
 
-	\Log::debug($card);
-
 	return response()->json(['card' => $card]);
 
 });
-
 
 Route::post('/cart',function(Request $request)
 {
@@ -226,6 +223,8 @@ Route::delete('/cart/{cart}', function(App\Cart $cart){
 
 });
 
+
+//Route::post('/card', 'CardController@register');
 
 
 /*Route::post('product/register',function(){

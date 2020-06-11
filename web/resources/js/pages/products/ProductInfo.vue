@@ -3,13 +3,13 @@
 	  <div>
 	    <h1>Product Information</h1>
 	    <ul style="list-style: none">
-			<img class="w-100" :src="product.image_url" "width=150px, height=100px"  alt />
+			  <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />
 		    <li>Product Name: {{ product.name }}</li>
 		    <li>Product Price($): {{ product.price }}</li>
 		    <li>Product Description: {{ product.description }}</li>
-			<router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
-      		<button v-else class="btn btn-primary">Buy</button> 
-			<button v-if="!isAdmin" class="btn btn-danger" @click.prevent="AddCart()">Add Cart</button>
+			  <router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
+      	<button v-else class="btn btn-primary">Buy</button>
+        <button v-if="!isAdmin" class="btn btn-danger" @click.prevent="AddCart()">Add Cart</button>
 	    </ul>
 	  </div>
   </div>
@@ -17,22 +17,20 @@
 
 <script>
 import AdHeader from '../../components/AdHeader.vue';
-
 export default {
   components: {
 		AdHeader
-	},
+  },
   computed: {
-    isAdmin () {
+    isAdmin(){
       return this.$store.getters['auth/admin']
     }
   },
 	data(){
-		return {
-			id: this.$route.params.id,
-      product:'',
-      cart:[]
-    }
+	  return {
+		  id: this.$route.params.id,
+			product:[]
+		}
 	},
 		
 	created(){
@@ -42,8 +40,6 @@ export default {
   },
   methods:{
     AddCart(){
-      console.log(this.product);
-      console.log(this.cart);
       axios.post('/api/cart',{
         cart:this.cart,
         product:this.product
