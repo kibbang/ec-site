@@ -93,7 +93,7 @@ class ProductsController extends Controller
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url')
         ->where('products.id', $id)
-        ->get();
+        ->first();
 
         return response()->json(['product' => $product]);
     }
@@ -126,5 +126,4 @@ class ProductsController extends Controller
         
         return response()->json(['product' => $product]);
     }
-
 }

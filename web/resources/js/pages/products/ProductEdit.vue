@@ -3,8 +3,8 @@
 	  <div>
 	    <h1>Product Edit</h1>
 	    <form>
-				<p>Product Id: {{ product.id }}</p>
-        <img class="w-100" :src="product.image_url" width=150px, height=100px  alt />
+				<p>Product Id: {{ product.id }} </p>
+        <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />
         <br>
 		    <div class="form-group">
 			    <label for="name">Name:</label>
