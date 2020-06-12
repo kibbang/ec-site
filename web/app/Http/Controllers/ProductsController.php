@@ -37,7 +37,7 @@ class ProductsController extends Controller
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url');
         if (!empty($data['search'])) {
-            $query->where('name', 'like', '%'.$request->search.'%');
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
         $products = $query->get();
 
