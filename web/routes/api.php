@@ -97,7 +97,7 @@ Route::prefix('/product')->group(function() {
 
         } catch (Exception $e) {
             Log::error($e);
-            return null;
+            throw $e;
         }
 
 
@@ -120,25 +120,23 @@ Route::prefix('/product')->group(function() {
         ->join('product_images','product_images.product_id','products.id')
         ->select('products.*','product_images.image_url')
         ->where('products.id',$id)
-        ->get();
+        ->first();
 
         return response()->json(['product' => $product]);
     });
 
-    Route::post('/up', function(Request $request){
+    Route::post('/update', function(Request $request){
         $productInfo = $request['product'];
 
         $product = Product::find($productInfo['id']); 
-        \Log::debug($product);
-
-        //\Log::debug( $productInfo['name']); 
+          
         $product-> update([
             'name' => $productInfo['name'],
             'quntity' => $productInfo['quntity'],
             'price' => $productInfo['price'],
             'description' => $productInfo['description']
         ]);
-        //\Log::debug( $productInfo); 
+         
              
         return response()->json(['product' => $product]);
     
@@ -150,8 +148,6 @@ Route::prefix('/product')->group(function() {
         ->select('products.*','product_images.image_url')
         ->where('products.id',$productId)
         ->first();
-
-        Log::debug($request->all());
 
         return response()->json(['product' => $product]);
 
@@ -182,8 +178,6 @@ Route::post('/card', function(Request $request){
 		'number' => $data['number'],
 		'security_code' => $data['security_code']
 	]);
-
-	\Log::debug($card);
 
 	return response()->json(['card' => $card]);
 

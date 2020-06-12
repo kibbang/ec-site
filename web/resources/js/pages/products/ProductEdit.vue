@@ -14,11 +14,11 @@
 			    <label for="name">Quantity:</label>
 			    <input v-model="product.quntity">
 		    </div>
-			<div class="form-group">
+			  <div class="form-group">
 			    <label for="name">Price($):</label>
 			    <input v-model="product.price">
 		    </div>
-			<div class="form-group">
+			  <div class="form-group">
 			    <label for="name">Description:</label>
 			    <input v-model="product.description">
 		    </div>
@@ -29,37 +29,35 @@
 </template>
 
 <script>
-	export default {
-		data(){
-			return {
-				id: this.$route.params.id,
-				product:{
-					id:'',
-					name: '',
-					quntity:'',
-					price:'',
-					description:''
-				}
+export default {
+	data(){
+		return {
+			id: this.$route.params.id,
+			product:{
+				id:'',
+				name: '',
+				quntity:'',
+				price:'',
+				description:''
 			}
-		},
-		methods:{
-			updateProduct(){
-				console.log(this.product)
-				axios.post('/api/product/up',{
-					product: this.product
-				})
-				.then(response => {
-					this.product = response.data.product;
-					this.$router.push({ path:'/test'})
-				})
-				.catch(error => console.log(error));
-			},
-		},
-		created(){
-			axios.get('/api/product/' + this.id) 
-			.then(response => this.product = response.data.product)
-			.catch(erorr => console.log(error));
 		}
-
+	},
+	methods:{
+		updateProduct(){
+			axios.post('/api/product/update',{
+			  product: this.product
+			})
+			.then(response => {
+				this.product = response.data.product;
+				this.$router.push({ path:'/product/admin'})
+			})
+			.catch(error => console.log(error));
+		},
+	},
+	created(){
+		axios.get('/api/product/' + this.id) 
+		.then(response => this.product = response.data.product)
+		.catch(erorr => console.log(error));
 	}
+}
 </script>

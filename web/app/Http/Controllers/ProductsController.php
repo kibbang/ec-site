@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\ProductImage;
 
 class ProductsController extends Controller
 {
@@ -15,9 +16,9 @@ class ProductsController extends Controller
         try
         {
             DB::transaction(function () use($data) {
-                $product = App\Product::create($data['product']);
+                $product = Product::create($data['product']);
                 $data['product_image']['product_id'] = $product->id;
-                App\ProductImage::create($data['product_image']);
+                ProductImage::create($data['product_image']);
             });
         } 
         catch (Exception $e)
@@ -71,10 +72,8 @@ class ProductsController extends Controller
         }
         catch (Exception $e)
         {
-            Log::error($e);
-            return null;
+            throw $e;
         }
-
 
         // $file_data = $request['file_info'];
         // $data = base64_decode($file_data);
@@ -122,8 +121,9 @@ class ProductsController extends Controller
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url')
         ->where('products.id', $productId)
-        ->first()
-        ->where('productId', '[0-9]+');
+        ->where('productId', '[0-9]+')
+        ->first();
+        
         return response()->json(['product' => $product]);
     }
 
