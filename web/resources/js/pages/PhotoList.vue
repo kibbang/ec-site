@@ -44,7 +44,6 @@ export default {
     }
   },  
   created(){
-    console.log('aaa');
 		axios.get('/api/product/list')
 		.then(response=>{
 			this.products = response.data.products;
