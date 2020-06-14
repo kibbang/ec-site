@@ -109,9 +109,8 @@ class ProductsController extends Controller
             'description' => $productInfo['description']
         ]);
         //\Log::debug( $productInfo); 
-             
-        return response()->json(['product' => $product]);
         where('productID','[0-9]+');
+        return response()->json(['product' => $product]);
     }
     //
     public function productId(Request $request, string $productId)
@@ -120,12 +119,12 @@ class ProductsController extends Controller
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url')
         ->where('products.id', $productId)
+        ->where('productId', '[0-9]+')
         ->first();
 
         Log::debug($request->all());
 
         return response()->json(['product' => $product]);
-        where('productId', '[0-9]+');
     }
 
 }

@@ -210,7 +210,7 @@ Route::get('/cart',function(Request $request)
     ->join('products','products.id','carts.product_id')
     ->join('product_images', 'product_images.product_id', 'products.id')
     ->select('carts.*', 'products.name', 'products.price', 'product_images.image_url')
-    ->where('user_id', 'like', '%'.$user->id.'%');
+    ->where('user_id', 'like', '%' .$user->id. '%');
 
     $carts = $cartInfo->get();
 
