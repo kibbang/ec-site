@@ -127,7 +127,7 @@
       //   axios.post('/api/product/register',formData).then(response =>{
       //     console.log(response)
       //   });
-      // }		
-	  }
+      // }
+    }
   }
 </script>

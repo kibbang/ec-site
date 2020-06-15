@@ -34,12 +34,12 @@
       CardRegister(){
         axios.post('/api/card',{
           card: this.card,
-			  })
-			  .then(response => {
-			    this.card = response.data.card;
+        })
+        .then(response => {
+          this.card = response.data.card;
           this.$router.push('/')
-			  })
-			  .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
       }
     }
   }

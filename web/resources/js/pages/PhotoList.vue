@@ -6,7 +6,7 @@
           <input type="text" v-model="search" class="form-control">
           <span class="input-group-prepend">
             <button @click.prevent="searchProduct()" class="btn btn-primary"><i class="fa fa-search">Search</i></button>
-          </span>            
+          </span>
         </div>
       </form>
     </div>
@@ -51,5 +51,5 @@
         console.log(error)
       });
     }
-  } 	
+  }
 </script>
