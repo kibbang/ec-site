@@ -20,28 +20,27 @@
 </template>
 
 <script>
-export default {
-  data(){
-    return {
-      card:{
-        number: '',
-        security_code: '',
-        user_id:''
-      },
-    }
-  },
-  methods:{
-    CardRegister(){
-      axios.post('/api/card',{
-        card: this.card,
-			})
-			.then(response => {
-			  this.card = response.data.card;
-        this.$router.push('/')
-			})
-			.catch(error => console.log(error));
+  export default {
+    data(){
+      return {
+        card:{
+          number: '',
+          security_code: '',
+          user_id:''
+        },
+      }
+    },
+    methods:{
+      CardRegister(){
+        axios.post('/api/card',{
+          card: this.card,
+			  })
+			  .then(response => {
+			    this.card = response.data.card;
+          this.$router.push('/')
+			  })
+			  .catch(error => console.log(error));
+      }
     }
   }
-
-}
 </script>

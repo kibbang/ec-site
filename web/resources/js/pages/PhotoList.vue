@@ -15,42 +15,41 @@
 </template>
 
 <script>
-
-import ProductCard from "../components/ProductCard.vue"
-export default {
-  components: {
-    ProductCard
-  },
-	data(){
-		return {
-      search:'',
-      products:[]
-    }
-  },
-  methods:{
-    searchProduct(){
-      axios.get('/api/product/list',{
-        params:{
-          search: this.search
-        }
-      })
-      .then(response => {
-        this.products = response.data.products
-        console.log(response.data.products);
+  import ProductCard from "../components/ProductCard.vue"
+  export default {
+    components: {
+      ProductCard
+    },
+    data(){
+      return {
+        search:'',
+        products:[]
+      }
+    },
+    methods:{
+      searchProduct(){
+        axios.get('/api/product/list',{
+          params:{
+            search: this.search
+          }
+        })
+        .then(response => {
+          this.products = response.data.products
+          console.log(response.data.products);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      }
+    },  
+    created(){
+      axios.get('/api/product/list')
+      .then(response=>{
+        this.products = response.data.products;
       })
       .catch(error => {
-        console.log(error);
+        console.log(error)
       });
     }
-  },  
-  created(){
-		axios.get('/api/product/list')
-		.then(response=>{
-			this.products = response.data.products;
-		})
-		.catch(error => {
-			console.log(error)
-		});
-  }
-} 	
+  } 	
 </script>

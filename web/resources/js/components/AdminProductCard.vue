@@ -21,9 +21,9 @@
 </template>
 
 <script>
-export default {
-   props:['products'],
-}
-</script>>
+  export default {
+    props:['products'],
+  }
+</script>
 
 

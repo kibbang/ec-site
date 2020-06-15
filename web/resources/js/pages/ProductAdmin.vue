@@ -19,45 +19,44 @@
 </template>
 
 <script>
-
-import AdHeader from '../components/AdHeader.vue';
-import AdminProductCard from "../components/AdminProductCard.vue"
-export default {
-  components: {
-    AdHeader,
-    AdminProductCard
-  },
-	data(){
-		return {
-      search:'',
-      products:[]
-    }
-  },
-  methods:{
-    
-		searchProduct(){
-      axios.get('/api/product/list',{
-        params:{
-          search: this.search
-        }
-      })
-      .then(response => {
-        this.products = response.data.products
-        console.log(response.data.products);
+  import AdHeader from '../components/AdHeader.vue';
+  import AdminProductCard from "../components/AdminProductCard.vue"
+  export default {
+    components: {
+      AdHeader,
+      AdminProductCard
+    },
+    data(){
+      return {
+        search:'',
+        products:[]
+      }
+    },
+    methods:{
+      
+      searchProduct(){
+        axios.get('/api/product/list',{
+          params:{
+            search: this.search
+          }
+        })
+        .then(response => {
+          this.products = response.data.products
+          console.log(response.data.products);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      },
+    },  
+    created(){
+      axios.get('/api/product/list')
+      .then(response=>{
+        this.products = response.data.products;
       })
       .catch(error => {
-        console.log(error);
+        console.log(error)
       });
-    },
-  },  
-  created(){
-		axios.get('/api/product/list')
-		.then(response=>{
-			this.products = response.data.products;
-		})
-		.catch(error => {
-			console.log(error)
-		});
-  }
-} 	
+    }
+  } 	
 </script>

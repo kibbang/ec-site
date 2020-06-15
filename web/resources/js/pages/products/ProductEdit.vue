@@ -29,35 +29,35 @@
 </template>
 
 <script>
-export default {
-	data(){
-		return {
-			id: this.$route.params.id,
-			product:{
-				id:'',
-				name: '',
-				quntity:'',
-				price:'',
-				description:''
+	export default {
+		data(){
+			return {
+				id: this.$route.params.id,
+				product:{
+					id:'',
+					name: '',
+					quntity:'',
+					price:'',
+					description:''
+				}
 			}
-		}
-	},
-	methods:{
-		updateProduct(){
-			axios.post('/api/product/update',{
-			  product: this.product
-			})
-			.then(response => {
-				this.product = response.data.product;
-				this.$router.push({ path:'/product/admin'})
-			})
-			.catch(error => console.log(error));
 		},
-	},
-	created(){
-		axios.get('/api/product/' + this.id) 
-		.then(response => this.product = response.data.product)
-		.catch(erorr => console.log(error));
+		methods:{
+			updateProduct(){
+				axios.post('/api/product/update',{
+			  	product: this.product
+				})
+				.then(response => {
+					this.product = response.data.product;
+					this.$router.push({ path:'/product/admin'})
+				})
+				.catch(error => console.log(error));
+			},
+		},
+		created(){
+			axios.get('/api/product/' + this.id) 
+			.then(response => this.product = response.data.product)
+			.catch(erorr => console.log(error));
+		}
 	}
-}
 </script>

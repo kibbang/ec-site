@@ -16,27 +16,27 @@
 </template>
 
 <script>
-import AdHeader from '../../components/AdHeader.vue';
-export default {
-  components: {
-		AdHeader
-  },
-  computed: {
-    isAdmin(){
-      return this.$store.getters['auth/admin']
-    }
-  },
-	data(){
-	  return {
-		  id: this.$route.params.id,
-			product:[]
-		}
-	},
+  import AdHeader from '../../components/AdHeader.vue';
+  export default {
+    components: {
+		  AdHeader
+    },
+    computed: {
+      isAdmin(){
+        return this.$store.getters['auth/admin']
+      }
+    },
+	  data(){
+	    return {
+		    id: this.$route.params.id,
+			  product:[]
+		  }
+	  },
 		
-	created(){
-		axios.get('/api/product/list/' + this.id) 
-    .then(response => this.product = response.data.product)
-		.catch(error => console.log(error));
-	}
-}
+	  created(){
+		  axios.get('/api/product/list/' + this.id) 
+      .then(response => this.product = response.data.product)
+		  .catch(error => console.log(error));
+	  }
+  }
 </script>

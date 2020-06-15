@@ -116,7 +116,8 @@ class ProductsController extends Controller
         
     }
     //
-    public function productInfo(Request $request, string $productId){
+    public function productInfo(Request $request, string $productId)
+    {
         $product = DB::table('products')
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url')
