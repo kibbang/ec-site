@@ -33,7 +33,7 @@
       }
     },
     methods:{
-        searchProduct(){
+      searchProduct(){
         axios.get('/api/product/list',{
           params:{
             search: this.search
