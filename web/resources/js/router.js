@@ -5,13 +5,13 @@ import VueRouter from 'vue-router'
 import PhotoList from './pages/PhotoList.vue'
 import Login from './pages/Login.vue'
 import SystemError from './pages/error/System.vue'
-import Test from './pages/Test.vue'
+import ProductAdmin from './pages/ProductAdmin.vue'
 import Product from './pages/products/Product.vue'
 import ProductRegister from './pages/products/Register.vue'
 import ProductList from './pages/products/ProductDetail.vue'
 import ProductDetail from './pages/products/ProductInfo.vue'
 import ProductEdit from './pages/products/ProductEdit.vue'
-import Shop from './pages/Shop.vue'
+
 
 import store from './store'
 
@@ -31,8 +31,8 @@ const routes = [
   },
 
   {
-    path: '/test',
-    component: Test
+    path: '/product/admin',
+    component: ProductAdmin
   },
   {
     path: '/product',

@@ -15,31 +15,31 @@
 </template>
 
 <script>
-export default {
-  data(){
-    return{
-      carts:[],
+  export default {
+    data(){
+      return{
+        carts:[],
+      }
+    },
+    created(){
+      axios.get('/api/cart')
+      .then(response=>{
+        this.carts = response.data.carts;
+        console.log(response)
+      })
+      .catch(error=>{
+        console.log(error)
+      });
+    },
+    methods:{
+      cartDelete(index, id){
+        axios.delete('/api/cart/' + id)
+        .then(response => {
+          this.carts.slice(id, 1)
+          this.$router.push('/')
+        })
+        .catch(error => console.log(error));
+      },
     }
-  },
-  created(){
-    axios.get('/api/cart')
-    .then(response=>{
-      this.carts = response.data.carts;
-      console.log(response)
-    })
-    .catch(error=>{
-      console.log(error)
-    });
-  },
-  methods:{
-    cartDelete(index, id){
-			axios.delete('/api/cart/' + id)
-			.then(response => {
-        this.carts.slice(id, 1)
-        this.$router.push('/')
-		  })
-			.catch(error => console.log(error));
-		},
-	}
-}
+  }
 </script>

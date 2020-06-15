@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\ProductImage;
+use DB;
 
 class ProductsController extends Controller
 {
@@ -12,13 +14,16 @@ class ProductsController extends Controller
     {
         $data = $request->all();
 
-        try {
+        try
+        {
             DB::transaction(function () use($data) {
-                $product = App\Product::create($data['product']);
+                $product = Product::create($data['product']);
                 $data['product_image']['product_id'] = $product->id;
-                App\ProductImage::create($data['product_image']);
+                ProductImage::create($data['product_image']);
             });
-        } catch (Exception $e) {
+        } 
+        catch (Exception $e)
+        { 
             throw $e;
         }
         
@@ -33,17 +38,16 @@ class ProductsController extends Controller
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url');
         if (!empty($data['search'])) {
-            $query->where('name', 'like', '%'.$request->search.'%');
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
         $products = $query->get();
 
         return response()->json(['products' => $products]);
     }
     //
-    public function imageUpload()
+    public function imageUpload(Request $request)
     {
-        $request = request()->all();
-        \Log::debug(request());
+        
         //$file_name = $request->file->getClientOriginalName();
        // \Log::debug(getClientOriginalName());
         //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
@@ -51,7 +55,8 @@ class ProductsController extends Controller
         $base64Context = $request['file_info'];
         $dir = '/';
 
-        try {
+        try 
+        {
             preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
             $extension = $matches[1];
 
@@ -65,11 +70,11 @@ class ProductsController extends Controller
 
             Storage::disk($storage)->put($path, $fileData);
 
-        } catch (Exception $e) {
-            Log::error($e);
-            return null;
         }
-
+        catch (Exception $e)
+        {
+            throw $e;
+        }
 
         // $file_data = $request['file_info'];
         // $data = base64_decode($file_data);
@@ -88,8 +93,8 @@ class ProductsController extends Controller
         $product = DB::table('products')
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url')
-        ->where('products.id',$id)
-        ->get();
+        ->where('products.id', $id)
+        ->first();
 
         return response()->json(['product' => $product]);
     }
@@ -99,21 +104,20 @@ class ProductsController extends Controller
         $productInfo = $request['product'];
 
         $product = Product::find($productInfo['id']); 
-        \Log::debug($product);
-
-        //\Log::debug( $productInfo['name']); 
+        
         $product->update([
             'name' => $productInfo['name'],
             'quntity' => $productInfo['quntity'],
             'price' => $productInfo['price'],
             'description' => $productInfo['description']
         ]);
-        //\Log::debug( $productInfo); 
         where('productID','[0-9]+');
+             
         return response()->json(['product' => $product]);
+        
     }
     //
-    public function productId(Request $request, string $productId)
+    public function productInfo(Request $request, string $productId)
     {
         $product = DB::table('products')
         ->join('product_images', 'product_images.product_id', 'products.id')
@@ -121,10 +125,7 @@ class ProductsController extends Controller
         ->where('products.id', $productId)
         ->where('productId', '[0-9]+')
         ->first();
-
-        Log::debug($request->all());
-
+        
         return response()->json(['product' => $product]);
     }
-
 }

@@ -125,7 +125,7 @@ Route::prefix('/product')->group(function() {
         return response()->json(['product' => $product]);
     });
 
-    Route::post('/up', function(Request $request){
+    Route::post('/update', function(Request $request){
         $productInfo = $request['product'];
 
         $product = Product::find($productInfo['id']); 
@@ -173,17 +173,17 @@ Route::prefix('/product')->group(function() {
 });
 
 Route::post('/card', function(Request $request){
-	$data = $request['card'];
-	
-	$user = Auth::user();
+    $data = $request['card'];
+    
+    $user = Auth::user();
 
-	$card = App\Card::create([
-		'user_id' => $user->id,
-		'number' => $data['number'],
-		'security_code' => $data['security_code']
-	]);
+    $card = App\Card::create([
+        'user_id' => $user->id,
+        'number' => $data['number'],
+        'security_code' => $data['security_code']
+    ]);
 
-	return response()->json(['card' => $card]);
+    return response()->json(['card' => $card]);
 
 });
 
@@ -199,7 +199,7 @@ Route::post('/cart',function(Request $request)
         'quntitiy' => 1
     ]);
 
-	return response()->json(['cart' => $cart]);
+    return response()->json(['cart' => $cart]);
 });
 
 Route::get('/cart',function(Request $request)
@@ -219,9 +219,9 @@ Route::get('/cart',function(Request $request)
 
 Route::delete('/cart/{cart}', function(App\Cart $cart){
 
-	$cart->delete();
+    $cart->delete();
 
-	return response()->json(['message' => 'delete successfully']);
+    return response()->json(['message' => 'delete successfully']);
 
 });
 
@@ -282,9 +282,9 @@ Route::delete('/cart/{cart}', function(App\Cart $cart){
 
 //Route::patch('/user/{user}', function(App\User $user,Request $request){
 
-	//$user->update($request->user);
+    //$user->update($request->user);
 
-	//return response()->json(['user' => $user]);
+    //return response()->json(['user' => $user]);
 
 //});
 

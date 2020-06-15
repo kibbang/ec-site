@@ -4,5 +4,3 @@
     <router-link to="/card/register">Card Register</router-link>
   </div>
 </template>
-
-<script>

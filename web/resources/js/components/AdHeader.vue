@@ -11,7 +11,6 @@
         </button>
       </div>
       <router-link to="/product">Product</router-link>
-      <router-link to="/shop">Shop</router-link>
       <br>
       <span v-if="isLogin" class="navbar__item">
         {{ username }}さま！おはようございます！
@@ -26,14 +25,14 @@
 </template>
 
 <script>
-export default {
-  computed: {
-    isLogin () {
-      return this.$store.getters['auth/check']
-    },
-    username () {
-      return this.$store.getters['auth/username']
+  export default {
+    computed: {
+      isLogin () {
+        return this.$store.getters['auth/check']
+      },
+      username () {
+        return this.$store.getters['auth/username']
+      }
     }
   }
-}
 </script>
