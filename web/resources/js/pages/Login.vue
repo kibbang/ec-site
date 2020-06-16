@@ -61,63 +61,63 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
-export default {
-  data () {
-    return {
-      tab: 1,
-      loginForm: {
-        email: '',
-        password: ''
-      },
-      registerForm: {
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: ''
-      }
-    }
-  },
-  computed: {
-    ...mapState({
-      apiStatus: state => state.auth.apiStatus,
-      loginErrors: state => state.auth.loginErrorMessages,
-      registerErrors: state => state.auth.registerErrorMessages
-    }),
-    ...mapGetters({
-      isAdmin: 'auth/admin'
-    })
-  },
-  methods: {
-    async login () {
-      // authストアのloginアクションを呼び出す
-      await this.$store.dispatch('auth/login', this.loginForm)
-      console.log(this.apiStatus, this.isAdmin)
-      if (this.apiStatus) {
-        if(this.isAdmin) {
-          // 管理者は管理ページに遷移
-          this.$router.push('/test')
-        } else {
-          // 一般ユーザーはトップページに移動する
-          this.$router.push('/')
+  import { mapState, mapGetters } from 'vuex'
+  export default {
+    data () {
+      return {
+        tab: 1,
+        loginForm: {
+          email: '',
+          password: ''
+        },
+        registerForm: {
+          name: '',
+          email: '',
+          password: '',
+          password_confirmation: ''
         }
       }
     },
-    async register () {
-      // authストアのresigterアクションを呼び出す
-      await this.$store.dispatch('auth/register', this.registerForm)
-      if (this.apiStatus) {
-        // トップページに移動する
-        this.$router.push('/')
+    computed: {
+      ...mapState({
+        apiStatus: state => state.auth.apiStatus,
+        loginErrors: state => state.auth.loginErrorMessages,
+        registerErrors: state => state.auth.registerErrorMessages
+      }),
+      ...mapGetters({
+        isAdmin: 'auth/admin'
+      })
+    },
+    methods: {
+      async login () {
+        // authストアのloginアクションを呼び出す
+        await this.$store.dispatch('auth/login', this.loginForm)
+        console.log(this.apiStatus, this.isAdmin)
+        if (this.apiStatus) {
+          if(this.isAdmin) {
+            // 管理者は管理ページに遷移
+            this.$router.push('/product')
+          } else {
+            // 一般ユーザーはトップページに移動する
+            this.$router.push('/')
+          }
+        }
+      },
+      async register () {
+        // authストアのresigterアクションを呼び出す
+        await this.$store.dispatch('auth/register', this.registerForm)
+        if (this.apiStatus) {
+          // トップページに移動する
+          this.$router.push('/')
+        }
+      },
+      clearError () {
+        this.$store.commit('auth/setLoginErrorMessages', null)
+        this.$store.commit('auth/setRegisterErrorMessages', null)
       }
     },
-    clearError () {
-      this.$store.commit('auth/setLoginErrorMessages', null)
-      this.$store.commit('auth/setRegisterErrorMessages', null)
+    created () {
+      this.clearError()
     }
-  },
-  created () {
-    this.clearError()
   }
-}
 </script>

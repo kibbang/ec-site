@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AdHeader />
     <div class="col-md-4">
       <form>
         <div class="input-group">
@@ -10,15 +11,20 @@
         </div>
       </form>
     </div>
-    <ProductCard :products="products"/>
+    <div>
+      <h1>Product Admin</h1>
+    </div>
+    <AdminProductCard :products="products"/>
   </div>
 </template>
 
 <script>
-  import ProductCard from "../components/ProductCard.vue"
+  import AdHeader from '../components/AdHeader.vue';
+  import AdminProductCard from "../components/AdminProductCard.vue"
   export default {
     components: {
-      ProductCard
+      AdHeader,
+      AdminProductCard
     },
     data(){
       return {
@@ -40,7 +46,7 @@
         .catch(error => {
           console.log(error);
         });
-      }
+      },
     },  
     created(){
       axios.get('/api/product/list')
