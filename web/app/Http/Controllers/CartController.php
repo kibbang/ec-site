@@ -11,10 +11,7 @@ class CartController extends Controller
 {
     //
     function addCart(Request $request)
-    {
-        
-        $data = $request['cart']; //리퀘스트 요청한 cart정보가 배열형태로 들어가 있음
-
+    {        
         $user = Auth::user();
         
         $product = $request['product']; //리퀘스트 요청한 product의 정보가 배열형태로 들어가있음
@@ -22,7 +19,7 @@ class CartController extends Controller
         $cart = Cart::create([
             'user_id' => $user->id,
             'product_id' => $product['id'],
-            'quntity' => $data['quntity']
+            'quntitiy' => 1
         ]);
 
         return response()->json(['cart' => $cart]);
@@ -43,7 +40,7 @@ class CartController extends Controller
         return response()->json(['carts'=>$carts]);
     }
 
-    function deleteCart(App\Cart $cart)
+    function deleteCart(Cart $cart)
     {
         $cart->delete();
 

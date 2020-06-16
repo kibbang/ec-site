@@ -41,123 +41,17 @@ Route::delete('/cart/{productId}', 'ProductsCartController@destroy');
 Route::delete('/cart', 'ProductsCartController@destroyAll');*/
 
 Route::prefix('/product')->group(function() {
-    Route::post('/register',function (Request $request) {
-        $data = $request->all();
+    Route::post('/register', 'ProductsController@productRegister');
 
-        try {
-            DB::transaction(function () use($data) {
-                $product = App\Product::create($data['product']);
-                $data['product_image']['product_id'] = $product->id;
-                App\ProductImage::create($data['product_image']);
-            });
-        } catch (Exception $e) {
-            throw $e;
-        }
-        
-        return response()->json(['status' => 200000]);
-    
-    });
+    Route::get('/list', 'ProductsController@productList');
 
-    Route::get('/list',function (Request $request) {
-        $data = $request->all();
-        $query = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url');
-        if (!empty($data['search'])) {
-            $query->where('name', 'like', '%'.$request->search.'%');
-        }
-        $products = $query->get();
+    Route::post('/imageupload', 'ProductsController@imageUpload');
 
-        return response()->json(['products' => $products]);
-    });
+    Route::get('/list/{product}', 'ProductsController@productDetail');
 
-    Route::post('/imageupload',function(){
-        $request = request()->all();
-        \Log::debug(request());
-        //$file_name = $request->file->getClientOriginalName();
-       // \Log::debug(getClientOriginalName());
-        //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
-        $storage = 'public';
-        $base64Context = $request['file_info'];
-        $dir = '/';
+    Route::post('/update', 'ProductsController@productUpdate');
 
-        try {
-            preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
-            $extension = $matches[1];
-
-            $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
-            $img = str_replace(' ', '+', $img);
-            $fileData = base64_decode($img);
-
-            $dir = rtrim($dir, '/').'/';
-            $fileName = md5($img);
-            $path = $dir.$fileName.'.'.$extension;
-
-            Storage::disk($storage)->put($path, $fileData);
-
-        } catch (Exception $e) {
-            Log::error($e);
-            return null;
-        }
-
-
-        // $file_data = $request['file_info'];
-        // $data = base64_decode($file_data);
-        // $file_name = 'image_' . time() . '.jpg';
-
-        // \Log::debug(finfo_buffer(finfo_open(), $data, FILEINFO_EXTENSION));
-        // if ($file_data != "") {
-        //     Storage::disk('public')->put($file_name, $data);
-        // }
-        
-        return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
-    });
-
-
-
-    Route::get('/list/{product}', function($id){
-        $product = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url')
-        ->where('products.id', $id)
-        ->first();
-
-        return response()->json(['product' => $product]);
-    });
-
-    Route::post('/update', function(Request $request){
-        $productInfo = $request['product'];
-
-        $product = Product::find($productInfo['id']); 
-        \Log::debug($product);
-
-        //\Log::debug( $productInfo['name']); 
-        $product-> update([
-            'name' => $productInfo['name'],
-            'quntity' => $productInfo['quntity'],
-            'price' => $productInfo['price'],
-            'description' => $productInfo['description']
-        ]);
-        //\Log::debug( $productInfo); 
-             
-        return response()->json(['product' => $product]);
-    
-    })->where('productID','[0-9]+');
-
-    Route::get('{productId}', function(Request $request, string $productId){
-        $product = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url')
-        ->where('products.id', $productId)
-        ->first();
-
-       
-
-        return response()->json(['product' => $product]);
-
-
-    })->where('productId', '[0-9]+');
-
+    Route::get('{product_id}', 'ProductsController@productInfo');
    /* Route::get('/search',function (Request $request) {
         \Log::debug($request->get('aaa'));
         $search = $request->get('/search');
@@ -172,58 +66,13 @@ Route::prefix('/product')->group(function() {
 
 });
 
-Route::post('/card', function(Request $request){
-    $data = $request['card'];
-    
-    $user = Auth::user();
+Route::post('/card', 'CardController@cardRegister');
 
-    $card = App\Card::create([
-        'user_id' => $user->id,
-        'number' => $data['number'],
-        'security_code' => $data['security_code']
-    ]);
+Route::post('/cart', 'CartController@addCart');
 
-    return response()->json(['card' => $card]);
+Route::get('/cart', 'CartController@viewCart');
 
-});
-
-Route::post('/cart',function(Request $request)
-{
-    $user = Auth::user();
-   
-    $product = $request['product']; //리퀘스트 요청한 product의 정보가 배열형태로 들어가있음
-   
-    $cart = App\Cart::create([
-        'user_id' => $user->id,
-        'product_id' => $product['id'],
-        'quntitiy' => 1
-    ]);
-
-    return response()->json(['cart' => $cart]);
-});
-
-Route::get('/cart',function(Request $request)
-{   
-    $user = Auth::user();
-    
-    $cartInfo = DB::table('carts')
-    ->join('products','products.id','carts.product_id')
-    ->join('product_images', 'product_images.product_id', 'products.id')
-    ->select('carts.*', 'products.name', 'products.price', 'product_images.image_url')
-    ->where('user_id', 'like', '%' .$user->id. '%');
-
-    $carts = $cartInfo->get();
-
-    return response()->json(['carts'=>$carts]);
-});
-
-Route::delete('/cart/{cart}', function(App\Cart $cart){
-
-    $cart->delete();
-
-    return response()->json(['message' => 'delete successfully']);
-
-});
+Route::delete('/cart/{cart}', 'CartController@deleteCart');
 
 
 //Route::post('/card', 'CardController@register');

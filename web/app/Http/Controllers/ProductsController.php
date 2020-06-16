@@ -10,7 +10,7 @@ use DB;
 class ProductsController extends Controller
 {
     //Product Register
-    public function register(Request $request)
+    public function productRegister(Request $request)
     {
         $data = $request->all();
 
@@ -31,7 +31,7 @@ class ProductsController extends Controller
     
     }
     //
-    public function list(Request $request)
+    public function productList(Request $request)
     {
         $data = $request->all();
         $query = DB::table('products')
@@ -88,7 +88,7 @@ class ProductsController extends Controller
         return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
     }
     //
-    public function detail($id)
+    public function productDetail($id)
     {
         $product = DB::table('products')
         ->join('product_images', 'product_images.product_id', 'products.id')
@@ -99,7 +99,7 @@ class ProductsController extends Controller
         return response()->json(['product' => $product]);
     }
     //
-    public function update(Request $request)
+    public function productUpdate(Request $request)
     {
         $productInfo = $request['product'];
 
@@ -111,8 +111,7 @@ class ProductsController extends Controller
             'price' => $productInfo['price'],
             'description' => $productInfo['description']
         ]);
-        where('productID','[0-9]+');
-             
+
         return response()->json(['product' => $product]);
         
     }
@@ -123,7 +122,6 @@ class ProductsController extends Controller
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url')
         ->where('products.id', $productId)
-        ->where('productId', '[0-9]+')
         ->first();
         
         return response()->json(['product' => $product]);
