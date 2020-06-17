@@ -12,7 +12,7 @@
         </div>
         <div class="form-group">
           <label for="name">Quantity:</label>
-          <input v-model="product.quntity">
+          <input v-model="product.quantity">
         </div>
       <div class="form-group">
           <label for="name">Price($):</label>
@@ -36,7 +36,7 @@
         product:{
           id:'',
           name: '',
-          quntity:'',
+          quantity:'',
           price:'',
           description:''
         }

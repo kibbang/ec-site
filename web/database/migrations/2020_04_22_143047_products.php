@@ -19,7 +19,7 @@ class Products extends Migration
             $table->unsignedBigInteger('shop_id');
             $table->string('name');
             $table->unsignedBigInteger('price');
-            $table->unsignedBigInteger('quntity');
+            $table->unsignedBigInteger('quantity');
             $table->string('description');
             $table->timestamps();
 

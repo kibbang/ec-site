@@ -21,7 +21,7 @@ class PurchaseHistories extends Migration
             $table->unsignedBigInteger('product_id');
             $table->string('name');
             $table->integer('price');
-            $table->integer('quntitiy');
+            $table->integer('quantity');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

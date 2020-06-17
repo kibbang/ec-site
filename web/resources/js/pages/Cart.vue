@@ -6,7 +6,7 @@
         <img class="w-100" :src="cart.image_url" width="150px" height="100px"  alt />
         <p> Product Name: {{cart.name}} </p>
         <p> Product Price($): {{cart.price}} </p>
-        <p> Order Quantity: {{cart.quntitiy}} </p>
+        <p> Order Quantity: 1 </p>
         <button class="btn btn-danger" @click="cartDelete(index, cart.id)">Delete</button>
         </li> 
       </ul>

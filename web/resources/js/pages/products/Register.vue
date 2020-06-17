@@ -26,8 +26,8 @@
       <br>
 
       <div class="form-group">
-        <label for="quntity">Quantity:</label>
-        <input v-model="product.quntity">
+        <label for="quantity">Quantity:</label>
+        <input v-model="product.quantity">
       </div>
 
       <button type="button" @click="productRegister">ProductRegister</button>
@@ -48,7 +48,7 @@
           name:'',
           description:'',
           price:'',
-          quntity:'',
+          quantity:'',
           shop_id: 1,
         },
         product_image: {

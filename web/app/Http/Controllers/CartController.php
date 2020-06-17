@@ -19,7 +19,7 @@ class CartController extends Controller
         $cart = Cart::create([
             'user_id' => $user->id,
             'product_id' => $product['id'],
-            'quntitiy' => $product['quntity']
+            'quantity' => $product['quantity']
         ]);
 
         return response()->json(['cart' => $cart]);

@@ -107,7 +107,7 @@ class ProductsController extends Controller
         
         $product->update([
             'name' => $productInfo['name'],
-            'quntity' => $productInfo['quntity'],
+            'quantity' => $productInfo['quantity'],
             'price' => $productInfo['price'],
             'description' => $productInfo['description']
         ]);
