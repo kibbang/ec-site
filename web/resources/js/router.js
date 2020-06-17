@@ -8,7 +8,7 @@ import SystemError from './pages/error/System.vue'
 import ProductAdmin from './pages/ProductAdmin.vue'
 import Product from './pages/products/Product.vue'
 import ProductRegister from './pages/products/Register.vue'
-import ProductList from './pages/products/ProductDetail.vue'
+//import ProductList from './pages/products/ProductDetail.vue'
 import ProductDetail from './pages/products/ProductInfo.vue'
 import ProductEdit from './pages/products/ProductEdit.vue'
 
@@ -39,10 +39,10 @@ const routes = [
     component: Product
   },
 
-  {
+ /*{
     path:'/product/list',
     component: ProductList
-  },
+  },*/
 
   {
     path: '/product/register',
