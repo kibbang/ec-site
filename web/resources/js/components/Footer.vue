@@ -11,7 +11,6 @@
 
 <script>
   import { mapState, mapGetters } from 'vuex'
-
   export default {
     computed: {
       ...mapState({
@@ -28,6 +27,6 @@
           this.$router.push('/login')
         }
       }
-    }
+    } 
   }
 </script>

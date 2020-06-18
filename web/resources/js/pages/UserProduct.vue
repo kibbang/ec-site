@@ -1,5 +1,5 @@
 <template>
-    <div>product {{id}}</div>
+  <div>product {{id}}</div>
 </template>
 
 <script>

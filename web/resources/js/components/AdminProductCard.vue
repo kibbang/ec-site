@@ -24,6 +24,4 @@
   export default {
     props:['products'],
   }
-</script>>
-
-
+</script>

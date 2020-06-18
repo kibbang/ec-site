@@ -37,7 +37,11 @@
         })
         .then(response => {
           this.card = response.data.card;
+<<<<<<< HEAD
           this.$router.push({ name:'home' })
+=======
+          this.$router.push('/')
+>>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
         })
         .catch(error => console.log(error));
       }

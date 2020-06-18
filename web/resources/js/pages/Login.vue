@@ -96,10 +96,17 @@
         if (this.apiStatus) {
           if(this.isAdmin) {
             // 管理者は管理ページに遷移
+<<<<<<< HEAD
             this.$router.push({ name:'product' })
           } else {
             // 一般ユーザーはトップページに移動する
             this.$router.push({ name:'home' })
+=======
+            this.$router.push('/product')
+          } else {
+            // 一般ユーザーはトップページに移動する
+            this.$router.push('/')
+>>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
           }
         }
       },
@@ -108,7 +115,11 @@
         await this.$store.dispatch('auth/register', this.registerForm)
         if (this.apiStatus) {
           // トップページに移動する
+<<<<<<< HEAD
           this.$router.push({ name:'home' })
+=======
+          this.$router.push('/')
+>>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
         }
       },
       clearError () {

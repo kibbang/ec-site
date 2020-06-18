@@ -26,4 +26,3 @@ class CardController extends Controller
         return response()->json(['card' => $card]);
     }
 }
-

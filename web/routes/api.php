@@ -41,15 +41,125 @@ Route::delete('/cart/{productId}', 'ProductsCartController@destroy');
 Route::delete('/cart', 'ProductsCartController@destroyAll');*/
 
 Route::prefix('/product')->group(function() {
+<<<<<<< HEAD
     Route::post('/register', 'ProductsController@productRegister');
 
     Route::get('/list', 'ProductsController@productList');
+=======
+    Route::post('/register',function (Request $request) {
+        $data = $request->all();
+
+        try {
+            DB::transaction(function () use($data) {
+                $product = App\Product::create($data['product']);
+                $data['product_image']['product_id'] = $product->id;
+                App\ProductImage::create($data['product_image']);
+            });
+        } catch (Exception $e) {
+            throw $e;
+        }
+        
+        return response()->json(['status' => 200000]);
+    
+    });
+
+    Route::get('/list',function (Request $request) {
+        $data = $request->all();
+        $query = DB::table('products')
+        ->join('product_images','product_images.product_id','products.id')
+        ->select('products.*','product_images.image_url');
+        if (!empty($data['search'])) {
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+        $products = $query->get();
+
+        return response()->json(['products' => $products]);
+    });
+
+    Route::post('/imageupload',function(){
+        $request = request()->all();
+        \Log::debug(request());
+        //$file_name = $request->file->getClientOriginalName();
+       // \Log::debug(getClientOriginalName());
+        //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
+        $storage = 'public';
+        $base64Context = $request['file_info'];
+        $dir = '/';
+
+        try {
+            preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
+            $extension = $matches[1];
+
+            $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
+            $img = str_replace(' ', '+', $img);
+            $fileData = base64_decode($img);
+
+            $dir = rtrim($dir, '/').'/';
+            $fileName = md5($img);
+            $path = $dir.$fileName.'.'.$extension;
+
+            Storage::disk($storage)->put($path, $fileData);
+
+        } catch (Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
+
+
+        // $file_data = $request['file_info'];
+        // $data = base64_decode($file_data);
+        // $file_name = 'image_' . time() . '.jpg';
+
+        // \Log::debug(finfo_buffer(finfo_open(), $data, FILEINFO_EXTENSION));
+        // if ($file_data != "") {
+        //     Storage::disk('public')->put($file_name, $data);
+        // }
+        
+        return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
+    });
+
+
+
+    Route::get('/list/{product}', function($id){
+        $product = DB::table('products')
+        ->join('product_images','product_images.product_id','products.id')
+        ->select('products.*','product_images.image_url')
+        ->where('products.id',$id)
+        ->first();
+
+        return response()->json(['product' => $product]);
+    });
+
+    Route::post('/update', function(Request $request){
+        $productInfo = $request['product'];
+
+        $product = Product::find($productInfo['id']); 
+          
+        $product-> update([
+            'name' => $productInfo['name'],
+            'quntity' => $productInfo['quntity'],
+            'price' => $productInfo['price'],
+            'description' => $productInfo['description']
+        ]);
+         
+             
+        return response()->json(['product' => $product]);
+    
+    })->where('productID','[0-9]+');
+>>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
 
     Route::post('/imageupload', 'ProductsController@imageUpload');
 
+<<<<<<< HEAD
     Route::get('/list/{product}', 'ProductsController@productDetail');
 
     Route::post('/update', 'ProductsController@productUpdate');
+=======
+        return response()->json(['product' => $product]);
+
+
+    })->where('productId', '[0-9]+');
+>>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
 
     Route::get('{product_id}', 'ProductsController@productInfo');
    /* Route::get('/search',function (Request $request) {
@@ -66,6 +176,7 @@ Route::prefix('/product')->group(function() {
 
 });
 
+<<<<<<< HEAD
 Route::post('/card', 'CardController@cardRegister');
 
 Route::post('/cart', 'CartController@addCart');
@@ -73,7 +184,22 @@ Route::post('/cart', 'CartController@addCart');
 Route::get('/cart', 'CartController@viewCart');
 
 Route::delete('/cart/{cart}', 'CartController@deleteCart');
+=======
+Route::post('/card', function(Request $request){
+    $data = $request['card'];
+    
+    $user = Auth::user();
 
+    $card = App\Card::create([
+        'user_id' => $user->id,
+        'number' => $data['number'],
+        'security_code' => $data['security_code']
+    ]);
+>>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
+
+    return response()->json(['card' => $card]);
+
+});
 
 //Route::post('/card', 'CardController@register');
 
