@@ -16,10 +16,10 @@ class Products extends Migration
         //
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('shop_id');
+            $table->unsignedBigInteger('shop_id');
             $table->string('name');
             $table->unsignedInteger('price');
-            $table->unsignedInteger('quantity');
+            $table->unsignedInteger('stock');
             $table->string('description');
             $table->timestamps();
 
