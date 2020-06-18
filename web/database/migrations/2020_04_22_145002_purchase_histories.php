@@ -16,9 +16,9 @@ class PurchaseHistories extends Migration
         //
         Schema::create('purchase_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('shop_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('shop_id');
+            $table->unsignedInteger('product_id');
             $table->string('name');
             $table->integer('price');
             $table->integer('quantity');

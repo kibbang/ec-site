@@ -15,7 +15,7 @@
           <p> Total Price($): {{ counter * product.price }} </p> 
           <br>
           <button v-if="!counter==0" class="btn btn-primary" @click.prevent="AddCart()">Go to Cart</button>
-          <button v-else class="btn btn-primary" @click="$router.push('/cart')">Go to Cart</button>
+          <button v-else class="btn btn-primary" @click="$router.push({name:'cart'})">Go to Cart</button>
         </span>
       </ul>
     </div>
@@ -58,7 +58,7 @@
           this.product = response.data.product
           this.cart = response.data.cart
           this.counter = response.data.counter
-          this.$router.push('/cart')
+          this.$router.push({ name:'cart' })
         })
         .catch(error => console.log(error));
       }

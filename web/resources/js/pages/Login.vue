@@ -96,10 +96,10 @@
         if (this.apiStatus) {
           if(this.isAdmin) {
             // 管理者は管理ページに遷移
-            this.$router.push('/product')
+            this.$router.push({ name:'product' })
           } else {
             // 一般ユーザーはトップページに移動する
-            this.$router.push('/')
+            this.$router.push({ name:'home' })
           }
         }
       },
@@ -108,7 +108,7 @@
         await this.$store.dispatch('auth/register', this.registerForm)
         if (this.apiStatus) {
           // トップページに移動する
-          this.$router.push('/')
+          this.$router.push({ name:'home' })
         }
       },
       clearError () {

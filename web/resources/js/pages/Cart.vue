@@ -38,7 +38,7 @@
         axios.delete('/api/cart/' + id)
         .then(response => {
           this.carts.slice(id, 1)
-          this.$router.push('/')
+          this.$router.push({ name:'home' })
         })
         .catch(error => console.log(error));
       },

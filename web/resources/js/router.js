@@ -26,48 +26,58 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'home',
     component: PhotoList
   },
 
   {
     path: '/product/admin',
+    name: 'productAdmin',
     component: ProductAdmin
   },
   {
     path: '/product',
+    name: 'product',
     component: Product
   },
 
   {
     path: '/product/register',
+    name: 'productRegister',
     component: ProductRegister
   },
 
   {
     path: '/product/:id',
+    name: 'productDetail',
     component: ProductDetail,
   },
 
   {
     path: '/product/:id/edit',
+    name: 'productEdit',
     component: ProductEdit,
   },
 
   {
     path: '/card',
+    name: 'card',
     component: Card,
   },
   {
     path: '/card/register',
+    name: 'cardRegister',
     component: CardRegister,
   },
   {
     path: '/cart',
+    name: 'cart',
     component: Cart,
   },
 
   {
     path: '/login',
+    name: 'login',
     component: Login,
     beforeEnter (to, from, next) {
       if (store.getters['auth/check']) {
@@ -79,6 +89,7 @@ const routes = [
   },
   {
     path: '/500',
+    name: 'systemError',
     component: SystemError
   }
 

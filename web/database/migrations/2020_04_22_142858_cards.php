@@ -16,7 +16,7 @@ class Cards extends Migration
         //
         Schema::create('cards', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedInteger('user_id');
             $table->string('number');
             $table->string('security_code');
             $table->timestamps();

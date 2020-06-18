@@ -15,7 +15,7 @@ class Shops extends Migration
     {
         //
         Schema::create('shops', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

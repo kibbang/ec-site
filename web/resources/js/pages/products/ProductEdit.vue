@@ -50,7 +50,7 @@
         })
         .then(response => {
           this.product = response.data.product;
-          this.$router.push({ path:'/product/admin'})
+          this.$router.push({ name:'productAdmin'})
         })
         .catch(error => console.log(error));
       },
