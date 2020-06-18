@@ -15,11 +15,13 @@ class CartController extends Controller
         $user = Auth::user();
         
         $product = $request['product']; //리퀘스트 요청한 product의 정보가 배열형태로 들어가있음
+
+        $quantity = $request->counter;
     
         $cart = Cart::create([
             'user_id' => $user->id,
             'product_id' => $product['id'],
-            'quantity' => $product['quantity']
+            'quantity' => $quantity
         ]);
 
         return response()->json(['cart' => $cart]);

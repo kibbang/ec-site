@@ -8,8 +8,15 @@
         <li>Product Price($): {{ product.price }}</li>
         <li>Product Description: {{ product.description }}</li>
         <router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
-        <button v-else class="btn btn-primary">Buy</button>
-        <button v-if="!isAdmin" class="btn btn-danger" @click.prevent="AddCart()">Add Cart</button>
+        <span v-if="!isAdmin">
+          <button class="btn btn-primary">Buy</button>
+          <button v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
+          <p> Added Quantity: {{ counter }} </p>
+          <p> Total Price($): {{ counter * product.price }} </p> 
+          <br>
+          <button v-if="!counter==0" class="btn btn-primary" @click.prevent="AddCart()">Go to Cart</button>
+          <button v-else class="btn btn-primary" @click="$router.push('/cart')">Go to Cart</button>
+        </span>
       </ul>
     </div>
   </div>
@@ -29,7 +36,9 @@
     data(){
       return {
         id: this.$route.params.id,
-        product:[]
+        product:[],
+        cart:[],
+        counter: 0     
       }
     },
       
@@ -42,12 +51,14 @@
       AddCart(){
         axios.post('/api/cart',{
           cart:this.cart,
-          product:this.product
+          product:this.product,
+          counter:this.counter
         })
         .then(response=>{
-          this.product = response.data.product;
+          this.product = response.data.product
           this.cart = response.data.cart
-          this.$router.push('/')
+          this.counter = response.data.counter
+          this.$router.push('/cart')
         })
         .catch(error => console.log(error));
       }
