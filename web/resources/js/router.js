@@ -16,10 +16,7 @@ import store from './store'
 
 import Card from './pages/Card.vue'
 import CardRegister from './pages/CardRegister.vue'
-<<<<<<< HEAD
 import Cart from './pages/Cart.vue'
-=======
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -35,10 +32,7 @@ const routes = [
 
   {
     path: '/product/admin',
-<<<<<<< HEAD
     name: 'productAdmin',
-=======
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
     component: ProductAdmin
   },
   {
@@ -72,7 +66,6 @@ const routes = [
   },
   {
     path: '/card/register',
-<<<<<<< HEAD
     name: 'cardRegister',
     component: CardRegister,
   },
@@ -81,10 +74,6 @@ const routes = [
     name: 'cart',
     component: Cart,
   },
-=======
-    component: CardRegister,
-  },
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
 
   {
     path: '/login',
