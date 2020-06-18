@@ -40,10 +40,6 @@
 
 <script>
   import AdHeader from '../../components/AdHeader.vue';
-<<<<<<< HEAD
-
-=======
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
   export default {
     components: {
       AdHeader
@@ -54,11 +50,7 @@
           name:'',
           description:'',
           price:'',
-<<<<<<< HEAD
           stock:'',
-=======
-          quntity:'',
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
           shop_id: 1,
         },
         product_image: {
@@ -69,11 +61,7 @@
     },
     methods:{
       async productRegister(){
-<<<<<<< HEAD
         // 画像を登録する処理
-=======
-      // 画像を登録する処理
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
         const formData = new FormData()
         formData.append('file',this.file_info)
         formData.append('product_image', JSON.stringify(this.file_info))
@@ -85,11 +73,7 @@
           //this.$router.push('/product/list')
         })
         .catch(error => console.log(error));
-<<<<<<< HEAD
         
-=======
-      
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
         if (!this.product_image.image_url) {
           return
         }
@@ -100,7 +84,6 @@
         })
         .then(response => {
           this.product = response.data.product;
-<<<<<<< HEAD
           this.$router.push({ name:'productAdmin' })
         })
         .catch(error => console.log(error));
@@ -109,13 +92,6 @@
       //   console.log(event)
       //     this.file_info = event.target.files[0];
       // },
-=======
-          this.$router.push('/product/admin')
-        })
-        .catch(error => console.log(error));
-      },
-      
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
       imageChanged(e)
       {
         console.log(e.target.files[0])
@@ -154,11 +130,7 @@
       //   axios.post('/api/product/register',formData).then(response =>{
       //     console.log(response)
       //   });
-<<<<<<< HEAD
       // }		
-=======
-      // }
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
     }
   }
 </script>

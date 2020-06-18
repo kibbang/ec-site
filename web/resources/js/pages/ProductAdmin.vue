@@ -7,11 +7,7 @@
           <input type="text" v-model="search" class="form-control">
           <span class="input-group-prepend">
             <button @click.prevent="searchProduct()" class="btn btn-primary"><i class="fa fa-search">Search</i></button>
-<<<<<<< HEAD
           </span>            
-=======
-          </span>
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
         </div>
       </form>
     </div>
@@ -23,10 +19,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-
-=======
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
   import AdHeader from '../components/AdHeader.vue';
   import AdminProductCard from "../components/AdminProductCard.vue"
   export default {
@@ -40,11 +32,7 @@
         products:[]
       }
     },
-<<<<<<< HEAD
     methods:{    
-=======
-    methods:{
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
       searchProduct(){
         axios.get('/api/product/list',{
           params:{
@@ -69,9 +57,5 @@
         console.log(error)
       });
     }
-<<<<<<< HEAD
   } 	
-=======
-  }
->>>>>>> 98b2de9534ab825382e5af623f20f9ba42e94739
 </script>
