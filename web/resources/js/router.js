@@ -16,7 +16,10 @@ import store from './store'
 
 import Card from './pages/Card.vue'
 import CardRegister from './pages/CardRegister.vue'
+
 import Cart from './pages/Cart.vue'
+
+import Account from './pages/Account.vue'
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -73,6 +76,12 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: Cart,
+  },
+
+  {
+    path: '/account',
+    name: 'account',
+    component: Account
   },
 
   {

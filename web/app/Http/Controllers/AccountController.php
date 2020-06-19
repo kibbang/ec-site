@@ -11,20 +11,19 @@ use Auth;
 class AccountController extends Controller
 {
     //
-    public function showPrice($id)
+    public function showPrice(Request $request)
     {
        \Log::debug('aaa');
         $user = Auth::user();
+        \Log::debug($user);
         \Log::debug(request()->all());
-        $data = $request['product'];
-        \Log::debug($data);
 
-        $productPrice = DB::table('products')
-        ->select('products.price')
-        ->where('products.id', $id);
+        $productInfo = $request['product'];
+        \Log::debug($request['product']);
 
-        $account = $productPrice->get();
-        \Log::debug($productPrice);
+        $product = Product::find('id');
+
+        $account = $product['price'];
 
         return response()->json(['account'=>$account]);
     }

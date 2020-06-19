@@ -63,3 +63,5 @@ Route::post('/cart', 'CartController@addCart');
 Route::get('/cart', 'CartController@viewCart');
 
 Route::delete('/cart/{cart}', 'CartController@deleteCart');
+
+Route::get('/account', 'AccountController@showPrice');

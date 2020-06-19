@@ -13,7 +13,7 @@
       </li> 
     </ul>
     
-    <button>Buy</button>  
+    <button @click="$router.push({ name :'account' })">Buy</button>  
   </div>
 </template>
 

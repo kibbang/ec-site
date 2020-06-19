@@ -3,7 +3,7 @@
     <div>
       <h1>Account</h1>
     </div>
-    <p>{{product.price}}</p>  
+    <p>{{account}}</p>  
   </div> 
 </template>
 
@@ -11,17 +11,16 @@
   export default {
     data(){
       return{
-        id:this.$route.params.id, 
-        cart:[],
-        product:[],
-        account:''
+        account: '',
+        product:[]
       }
     },
     created(){
       console.log(this.account)
-      axios.post('/api/account')
+      axios.get('/api/account')
       .then(response=>{
         this.account = response.data.account
+        this.product = response.data.product
       })
       .catch(error=>{
         console.log(error)
