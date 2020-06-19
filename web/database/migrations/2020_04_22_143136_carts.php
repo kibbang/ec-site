@@ -18,7 +18,7 @@ class Carts extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id');
-            $table->integer('quntitiy');
+            $table->unsignedInteger('quantity');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

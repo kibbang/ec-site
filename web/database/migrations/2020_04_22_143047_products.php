@@ -15,11 +15,11 @@ class Products extends Migration
     {
         //
         Schema::create('products', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedBigInteger('shop_id');
             $table->string('name');
-            $table->unsignedBigInteger('price');
-            $table->unsignedBigInteger('quntity');
+            $table->unsignedInteger('price');
+            $table->unsignedInteger('stock');
             $table->string('description');
             $table->timestamps();
 

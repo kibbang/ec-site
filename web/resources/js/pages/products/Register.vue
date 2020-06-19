@@ -29,8 +29,8 @@
       <br>
 
       <div class="form-group">
-        <label for="quntity">Quantity:</label>
-        <input v-model="product.quntity">
+        <label for="stock">Stock:</label>
+        <input v-model="product.stock">
       </div>
 
       <button type="button" @click="productRegister">ProductRegister</button>
@@ -50,7 +50,7 @@
           name:'',
           description:'',
           price:'',
-          quntity:'',
+          stock:'',
           shop_id: 1,
         },
         product_image: {
@@ -61,7 +61,7 @@
     },
     methods:{
       async productRegister(){
-      // 画像を登録する処理
+        // 画像を登録する処理
         const formData = new FormData()
         formData.append('file',this.file_info)
         formData.append('product_image', JSON.stringify(this.file_info))
@@ -73,7 +73,7 @@
           //this.$router.push('/product/list')
         })
         .catch(error => console.log(error));
-      
+        
         if (!this.product_image.image_url) {
           return
         }
@@ -84,11 +84,14 @@
         })
         .then(response => {
           this.product = response.data.product;
-          this.$router.push('/product/admin')
+          this.$router.push({ name:'productAdmin' })
         })
         .catch(error => console.log(error));
       },
-      
+      // fileSelected(event){
+      //   console.log(event)
+      //     this.file_info = event.target.files[0];
+      // },
       imageChanged(e)
       {
         console.log(e.target.files[0])
@@ -127,7 +130,7 @@
       //   axios.post('/api/product/register',formData).then(response =>{
       //     console.log(response)
       //   });
-      // }
+      // }		
     }
   }
 </script>

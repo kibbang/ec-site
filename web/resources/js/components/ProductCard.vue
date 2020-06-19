@@ -9,8 +9,8 @@
                 <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />
                 <p>Product Name : {{ product.name }}</p>
                 <p>Product Price($) : {{ product.price }}</p>
-                <router-link class="btn btn-success" :to="`/product/${product.id}`">Product detail</router-link>              
-              </li>
+                <router-link class="btn btn-success" :to="`/product/${product.id}`">Product detail</router-link>               
+              </li>           	
             </ul>
           </h4>
         </div>

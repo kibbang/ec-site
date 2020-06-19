@@ -11,8 +11,8 @@
           <input v-model="product.name">
         </div>
         <div class="form-group">
-          <label for="name">Quantity:</label>
-          <input v-model="product.quntity">
+          <label for="name">Stock:</label>
+          <input v-model="product.stock">
         </div>
         <div class="form-group">
           <label for="name">Price($):</label>
@@ -36,7 +36,7 @@
         product:{
           id:'',
           name: '',
-          quntity:'',
+          stock:'',
           price:'',
           description:''
         }
@@ -49,7 +49,7 @@
         })
         .then(response => {
           this.product = response.data.product;
-          this.$router.push({ path:'/product/admin'})
+          this.$router.push({ name:'productAdmin'})
         })
         .catch(error => console.log(error));
       },

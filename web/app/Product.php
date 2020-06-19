@@ -11,7 +11,7 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'quntity',
+        'stock',
         'shop_id'
     ];
     protected $primaryKey = 'id';

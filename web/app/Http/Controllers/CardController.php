@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use APP\Card;
+use App\Card;
+use Auth;
+use DB;
 
 class CardController extends Controller
 {
     //
-    public function register(Request $request)
+    public function cardRegister(Request $request)
     {
         
         $data = $request['card'];
