@@ -11,18 +11,23 @@ use Auth;
 class AccountController extends Controller
 {
     //
-    public function showPrice(Request $request)
+    public function showCartPrice(Request $request)
+
     {
-       \Log::debug('aaa');
-        $user = Auth::user();
-        \Log::debug($user);
-        \Log::debug(request()->all());
 
-        $account = DB::table('products')
-        ->select('products.price')
-        ->get();
-
-        return response()->json(['account'=>$account]);
+        $carts = $request['carts'];
+        
+        return response()->json(['carts' => $carts]);
     }
-}
 
+    public function showDirectBuyPrice(Request $request)
+
+    {
+        $products = DB::table('products')
+        ->join('product_images', 'product_images.product_id', 'products.id')
+        ->select('products.*', 'product_images.image_url')
+        ->first();
+        return response()->json(['products' => $products]);
+    }
+
+}

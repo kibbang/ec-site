@@ -9,7 +9,7 @@
         <li>Product Description: {{ product.description }}</li>
         <router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
         <span v-if="!isAdmin">
-          <button @click="$router.push({ name :'account' })" class="btn btn-primary">Buy</button>
+          <button @click="goToAccountView()" class="btn btn-primary">Buy</button>
           <button v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
           <p> Added Quantity: {{ counter }} </p>
           <p> Total Price($): {{ counter * product.price }} </p> 
@@ -61,6 +61,10 @@
           this.$router.push({ name:'cart' })
         })
         .catch(error => console.log(error));
+      },
+      goToAccountView(){
+        //fromView cartView or productInfoView
+        this.$router.push({name:'account',params:{fromView:'productInfoView'}})
       }
     }
   }

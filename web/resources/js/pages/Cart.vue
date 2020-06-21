@@ -13,7 +13,7 @@
       </li> 
     </ul>
     
-    <button @click="$router.push({ name :'account' })">Buy</button>  
+    <button @click="goToAccountView()">Buy</button>  
   </div>
 </template>
 
@@ -42,6 +42,10 @@
         })
         .catch(error => console.log(error));
       },
+      goToAccountView(){
+        //fromView cartView or productInfoView
+        this.$router.push({name:'account',params:{fromView:'cartView'}})
+      }
     }
   }
 </script>
