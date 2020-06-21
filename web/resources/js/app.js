@@ -21,13 +21,6 @@ const createApp = async () => {
       
     }
   })
-
-  new Vue({
-    el: '#cardSelect',
-    data: {
-      selected: ''
-    }
-  })
 }
 
 createApp()

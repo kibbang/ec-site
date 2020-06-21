@@ -67,3 +67,5 @@ Route::delete('/cart/{cart}', 'CartController@deleteCart');
 Route::get('/account', 'AccountController@showCartPrice');
 
 Route::get('/account', 'AccountController@showDirectBuyPrice');
+
+Route::get('/account', 'AccountController@cardSelect');

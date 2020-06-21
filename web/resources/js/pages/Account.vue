@@ -17,25 +17,24 @@
       {{fromView}}
     </div>
     <div v-if="fromView=='productInfoView'">
-      <ul style="list-style:none" v-for="product in products" :key="product.id">
-        <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />
+      <ul style="list-style:none">  
+        <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />      
         <li>Product Name: {{product.name}} </li>
-        <li>Product Price: {{product.price}}</li>
-        <li>Order Quantity: </li>
+        <li>Product Price: {{product.price}} </li>
       </ul>  
-      <strong>Total Price: {{1}} </strong>
+      <strong>Total Price: </strong>
       <br>
       {{fromView}}
     </div>     
     <div>
-      <select v-model="cardSelected">
+      <select>
         <option disabled value="">Please select Card</option>
         <option>A</option>
         <option>B</option>
         <option>C</option>
       </select>
     </div>
-    <button>Buy</button>
+    <button v-on:click="buy('Buy product is success!',$router.push({ name:'home' }))">Buy</button>
   </div> 
 </template>
 
@@ -44,8 +43,10 @@
     data(){
       return{
         id: this.$route.params.id,
+        productId: this.$route.params.id,
         carts:[],
-        cardSelected:'',
+        product:'',
+        cards:[]
       }
     },
     computed: {
@@ -55,14 +56,26 @@
         }, 0)
       }
     },
+    methods:{
+      buy: function(message) {
+        alert(message)
+      }
+    },
     created(){
       axios.get('/api/cart')
       .then(response=>{
-        this.carts = response.data.carts      
+        this.carts = response.data.carts
+        axios.get('/api/product/list/'+this.id)
+        .then(response=>{
+          this.product = response.data.product
+          axios.get('/api/card')
+          .then(response=>{
+            this.cards = response.data.cards
+          })
+        })  
       })
       .catch(error => console.log(error));
-      //fromView cartView or productInfoView
-      this.fromView = this.$route.params.fromView;      
-    },
+      this.fromView = this.$route.params.fromView;
+    }
   }
 </script>
