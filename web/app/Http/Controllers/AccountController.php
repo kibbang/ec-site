@@ -19,7 +19,7 @@ class AccountController extends Controller
         return response()->json(['carts' => $carts]);
     }
 
-    public function showDirectBuyPrice(Request $request)
+    public function showDirectBuyPrice(Request $request, string $productId )
 
     {
         $product = DB::table('products')
@@ -30,7 +30,7 @@ class AccountController extends Controller
 
         return response()->json(['product' => $product]);
     }
-    
+
     /////以下はまだ進行中です。/////
     public function cardSelect(Request $request)
     {
