@@ -64,7 +64,7 @@
       },
       goToAccountView(){
         //fromView cartView or productInfoView
-        this.$router.push({name:'account',params:{fromView:'productInfoView'}})
+        this.$router.push({name:'accountProduct',params:{fromView:'productInfoView'}})
       }
     }
   }

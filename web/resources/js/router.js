@@ -12,6 +12,7 @@ import ProductDetail from './pages/products/ProductInfo.vue'
 import ProductEdit from './pages/products/ProductEdit.vue'
 
 
+
 import store from './store'
 
 import Card from './pages/Card.vue'
@@ -20,6 +21,7 @@ import CardRegister from './pages/CardRegister.vue'
 import Cart from './pages/Cart.vue'
 
 import Account from './pages/Account.vue'
+import accountProduct from './pages/Account.vue'
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -82,6 +84,12 @@ const routes = [
     path: '/account',
     name: 'account',
     component: Account
+  },
+
+  {
+    path: '/account/:id',
+    name: 'accountProduct',
+    component: accountProduct
   },
 
   {

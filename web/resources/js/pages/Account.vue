@@ -3,7 +3,7 @@
     <div>
       <h1>Account</h1>
     </div>
-    <div v-if="fromView=='cartView'">
+    <div v-if="fromView == 'cartView'">
       <ul style="list-style: none" v-for="cart in carts" :key="cart.id">
         <li>
           <img class="w-100" :src="cart.image_url" width="150px" height="100px"  alt />
@@ -13,18 +13,17 @@
         </li> 
       </ul>
       <strong>Total Price: {{total}}$</strong>
-      <br>
-      {{fromView}}
     </div>
     <div v-if="fromView=='productInfoView'">
       <ul style="list-style:none">  
         <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />      
         <li>Product Name: {{product.name}} </li>
         <li>Product Price: {{product.price}} </li>
+        <li>Order Quantity: {{counter}} </li>
+        <button @click="counter += 1" class="btn btn-danger">Quantity Increase</button>
+        <button @click="counter -= 1" class="btn btn-danger">Quantity Decrease</button> 
       </ul>  
-      <strong>Total Price: </strong>
-      <br>
-      {{fromView}}
+      <strong>Total Price($): {{product.price*counter}} </strong>
     </div>     
     <div>
       <select>
@@ -34,7 +33,7 @@
         <option>C</option>
       </select>
     </div>
-    <button v-on:click="buy('Buy product is success!',$router.push({ name:'home' }))">Buy</button>
+    <button @click="buy('Buy product is success!',$router.push({ name:'home' }))">Buy</button>
   </div> 
 </template>
 
@@ -43,10 +42,11 @@
     data(){
       return{
         id: this.$route.params.id,
-        productId: this.$route.params.id,
         carts:[],
         product:'',
-        cards:[]
+        cards:[],
+        fromView:'',
+        counter: 0
       }
     },
     computed: {
@@ -59,21 +59,30 @@
     methods:{
       buy: function(message) {
         alert(message)
+      },
+      zeroAlert: function(message){
+        if(counter==0){        
+          alert(message)
+        }
       }
     },
-    created(){
-      axios.get('/api/cart')
+    async created(){      
+      await axios.get('/api/cart')
       .then(response=>{
         this.carts = response.data.carts
-        axios.get('/api/product/list/'+this.id)
-        .then(response=>{
-          this.product = response.data.product
-          axios.get('/api/card')
-          .then(response=>{
-            this.cards = response.data.cards
-          })
-        })  
+      })   
+      .catch(error => console.log(error));
+                   
+      await axios.get('/api/product/list/'+this.id)
+      .then(response=>{
+        this.product = response.data.product
       })
+      .catch(error => console.log(error)); 
+        
+      await axios.get('/api/card')
+      .then(response=>{
+        this.cards = response.data.cards
+      }) 
       .catch(error => console.log(error));
       this.fromView = this.$route.params.fromView;
     }
