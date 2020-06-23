@@ -27,14 +27,14 @@
       <strong>Total Price($): {{product.price*counter}} </strong>
     </div>     
     <div class="form-group">
-      <select class="form-control" v-model="card">
+      <select class="form-control" v-model="select">
         <option disabled value="">Please select Card</option>
-        <option v-for="card in cards" :key="card.user_id" :value="card.number">
+        <option v-for="card in cards" :key="card.id" :value="card.number">
           {{card.number}}
         </option>
       </select>
     </div>
-    <button @click="buy('Buy product is success!',$router.push({ name:'home' }))">Buy</button> 
+    <button @click="buy()">Buy</button> 
   </div>
 </template>
 
@@ -44,11 +44,11 @@
       return{
         id: this.$route.params.id,
         carts:[],
-        product:'',
         cards:[],
+        product:'',
         fromView:'',
-        counter: 0,
-        card:[]
+        select:'',
+        counter: 0
       }
     },
     computed: {
@@ -59,8 +59,28 @@
       }
     },
     methods:{
-      buy: function(message){
-        alert(message)
+      buy: function(){
+        if(this.counter==0)
+        {
+          alert('Please Select Order Quantity')
+          return
+        }
+        else
+        {
+          alert('Buy Successful!')
+          return this.$router.push({name: 'home'})
+        }
+        axios.post('api/product/list',{
+          product: this.product,
+          counter: this.counter
+        })
+        .then(response =>{
+          this.product = response.data.product
+          this.counter = response.data.counter
+          console.log(response.data)
+        })
+        .catch(error => console.log(error));
+      
       },
       quantityDecrease: function(){
         if(this.counter <= 0){
@@ -87,7 +107,6 @@
       await axios.get('/api/card')
       .then(response=>{
         this.cards = response.data.cards
-        console.log(response.data)
       }) 
       .catch(error => console.log(error));
       this.fromView = this.$route.params.fromView;

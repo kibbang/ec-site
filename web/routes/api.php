@@ -58,3 +58,5 @@ Route::get('/account', 'AccountController@showCartPrice');
 Route::get('/account/{product}', 'AccountController@showDirectBuyPrice');
 
 Route::get('/account', 'AccountController@cardSelect');
+
+Route::post('/product/list', 'AccountController@buySuccess');

@@ -44,9 +44,31 @@ class AccountController extends Controller
         return response()->json(['cards' => $cards]);
     }
 
-    public function buySuccess(Request $request)
+    public function buySuccess(Request $request, String $productId)
     {
+        $user = Auth::user();
+        $productInfo = $request['product'];
+        $counter = $request->counter;
 
+        \Log::debug($user);
+
+        DB::transaction(function () {
+            try{
+                DB::table('products')
+                ->where('products.id', $productId)
+                ->update(['products.stock' => $counter--]);
+
+                DB::table('carts')
+                ->where('user_id', 'like', '%' .$user->id. '%')
+                ->delete();
+            }
+            catch(Exception $e)
+            {
+                throw $e;
+            }
+
+            return response()->json(['status' => 200000]);
+        });
     }
 
 }
