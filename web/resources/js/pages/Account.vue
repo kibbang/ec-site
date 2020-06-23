@@ -3,10 +3,6 @@
     <div>
       <h1>Account</h1>
     </div>
-    <p>card</p>
-    <ul v-for="card in cards" :key="card.id">
-      <li>Card: {{card.number}}</li>
-    </ul>
     <div v-if="fromView == 'cartView'">
       <ul style="list-style: none" v-for="cart in carts" :key="cart.id">
         <li>
@@ -18,6 +14,7 @@
       </ul>
       <strong>Total Price: {{total}}$</strong>
     </div>
+    
     <div v-if="fromView=='productInfoView'">
       <ul style="list-style:none">  
         <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />      
@@ -25,7 +22,7 @@
         <li>Product Price: {{product.price}} </li>
         <li>Order Quantity: {{counter}} </li>
         <button @click="counter += 1" class="btn btn-danger">Quantity Increase</button>
-        <button @click="counter -= 1" class="btn btn-danger">Quantity Decrease</button> 
+        <button @click="quantityDecrease" class="btn btn-danger">Quantity Decrease</button> 
       </ul>  
       <strong>Total Price($): {{product.price*counter}} </strong>
     </div>     
@@ -33,13 +30,11 @@
       <select class="form-control" v-model="card">
         <option disabled value="">Please select Card</option>
         <option v-for="card in cards" :key="card.user_id" :value="card.number">
-          {{card.number}}</option>
-        <option>B</option>
-        <option>C</option>
+          {{card.number}}
+        </option>
       </select>
     </div>
-    <button @click="buy('Buy product is success!',$router.push({ name:'home' }))">Buy</button>
-    <p>Card</p>   
+    <button @click="buy('Buy product is success!',$router.push({ name:'home' }))">Buy</button> 
   </div>
 </template>
 
@@ -67,13 +62,16 @@
       buy: function(message){
         alert(message)
       },
-      zeroAlert: function(message){
-        if(counter==0){        
-          alert(message)
+      quantityDecrease: function(){
+        if(this.counter <= 0){
+          alert('Order quantity cannot be zero.')
+
+          return 
         }
+        this.counter--
       }
     },
-    async created(){     
+    async created(){    
       await axios.get('/api/cart')
       .then(response=>{
         this.carts = response.data.carts
@@ -89,6 +87,7 @@
       await axios.get('/api/card')
       .then(response=>{
         this.cards = response.data.cards
+        console.log(response.data)
       }) 
       .catch(error => console.log(error));
       this.fromView = this.$route.params.fromView;
