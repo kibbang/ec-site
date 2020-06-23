@@ -34,8 +34,13 @@ class AccountController extends Controller
     /////以下はまだ進行中です。/////
     public function cardSelect(Request $request)
     {
-        $cards = $request['cards'];
-
+        $user = Auth::user();
+        $cards = DB::table('cards')
+        ->join('users', 'users.id', 'cards.user_id')
+        ->select('cards.id', 'cards.number')
+        ->where('user_id', 'like', '%' .$user->id. '%')
+        ->get();
+        
         return response()->json(['cards' => $cards]);
     }
 

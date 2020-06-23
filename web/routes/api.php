@@ -27,19 +27,6 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 // ログインユーザー
 Route::get('/user', fn() => Auth::user())->name('user');
 
-
-/*Route::get('/products', 'ProductsController@index');
-
-Route::get('/products/{product}', 'ProductsController@show');
-
-Route::get('/cart', 'ProductsCartController@index');
-
-Route::post('/cart', 'ProductsCartController@store');
-
-Route::delete('/cart/{productId}', 'ProductsCartController@destroy');
-
-Route::delete('/cart', 'ProductsCartController@destroyAll');*/
-
 Route::prefix('/product')->group(function() {
 
     Route::post('/register', 'ProductsController@productRegister');
@@ -57,6 +44,8 @@ Route::prefix('/product')->group(function() {
 });
 
 Route::post('/card', 'CardController@cardRegister');
+
+Route::get('/card','CardController@cardInfo');
 
 Route::post('/cart', 'CartController@addCart');
 

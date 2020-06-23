@@ -24,5 +24,18 @@ class CardController extends Controller
         ]);
 
         return response()->json(['card' => $card]);
+    }        
+
+    public function cardInfo()
+    {
+        $user = Auth::user();
+        $card = DB::table('cards')
+        ->join('users','users.id', 'cards.user_id')
+        ->select('cards.*')
+        ->where('user_id', 'like', '%' .$user->id. '%')
+        ->get();
+        
+
+        return response()->json(['card' => $card]);
     }
 }

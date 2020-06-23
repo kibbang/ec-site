@@ -3,6 +3,10 @@
     <div>
       <h1>Account</h1>
     </div>
+    <p>card</p>
+    <ul v-for="card in cards" :key="card.id">
+      <li>Card: {{card.number}}</li>
+    </ul>
     <div v-if="fromView == 'cartView'">
       <ul style="list-style: none" v-for="cart in carts" :key="cart.id">
         <li>
@@ -25,16 +29,18 @@
       </ul>  
       <strong>Total Price($): {{product.price*counter}} </strong>
     </div>     
-    <div>
-      <select>
+    <div class="form-group">
+      <select class="form-control" v-model="card">
         <option disabled value="">Please select Card</option>
-        <option>A</option>
+        <option v-for="card in cards" :key="card.user_id" :value="card.number">
+          {{card.number}}</option>
         <option>B</option>
         <option>C</option>
       </select>
     </div>
     <button @click="buy('Buy product is success!',$router.push({ name:'home' }))">Buy</button>
-  </div> 
+    <p>Card</p>   
+  </div>
 </template>
 
 <script>
@@ -46,7 +52,8 @@
         product:'',
         cards:[],
         fromView:'',
-        counter: 0
+        counter: 0,
+        card:[]
       }
     },
     computed: {
@@ -57,7 +64,7 @@
       }
     },
     methods:{
-      buy: function(message) {
+      buy: function(message){
         alert(message)
       },
       zeroAlert: function(message){
@@ -66,13 +73,13 @@
         }
       }
     },
-    async created(){      
+    async created(){     
       await axios.get('/api/cart')
       .then(response=>{
         this.carts = response.data.carts
       })   
       .catch(error => console.log(error));
-                   
+        
       await axios.get('/api/product/list/'+this.id)
       .then(response=>{
         this.product = response.data.product

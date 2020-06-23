@@ -11,7 +11,7 @@
         <span v-if="!isAdmin">
           <button @click="goToAccountView()" class="btn btn-primary">Buy</button>
           <button v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
-          <p> Added Quantity: {{ counter }} </p>
+          <p> Added Cart Quantity: {{ counter }} </p>
           <p> Total Price($): {{ counter * product.price }} </p> 
           <br>
           <button v-if="!counter==0" class="btn btn-primary" @click.prevent="AddCart()">Go to Cart</button>
