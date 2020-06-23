@@ -53,7 +53,8 @@ class AccountController extends Controller
         \Log::debug($user);
 
         DB::transaction(function () {
-            try{
+            try
+            {
                 DB::table('products')
                 ->where('products.id', $productId)
                 ->update(['products.stock' => $counter--]);
