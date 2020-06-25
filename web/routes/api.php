@@ -65,4 +65,4 @@ Route::post('/account/stock/{product}', 'AccountController@buySuccess');
 
 
 Route::post('/account/stock', 'AccountController@cartBuySuccess');
-Route::delete('account/cart', 'AccountController@cartBuySuccess');
+//Route::delete('account/cart', 'AccountController@cartBuySuccess');

@@ -63,7 +63,7 @@ class AccountController extends Controller
         try
         {
 
-            DB::transaction(function () use($product,$counter,$user,$productInfo,$order,$fromView,$carts){
+            DB::transaction(function () use($product,$counter,$user,$productInfo,$order,$fromView){
                 if($fromView=='productInfoView'){
                     $product->update([
                         'stock' => $product->stock - $counter
