@@ -44,32 +44,79 @@ class AccountController extends Controller
         return response()->json(['cards' => $cards]);
     }
 
-    public function buySuccess(Request $request, String $productId)
+    public function buySuccess(Request $request) 
     {
+        
+        $counter = $request->counter;        
         $user = Auth::user();
         $productInfo = $request['product'];
-        $counter = $request->counter;
+        $product = Product::find($productInfo);
 
-        \Log::debug($user);
+        $fromView = $request->fromView;
 
-        DB::transaction(function () {
-            try
-            {
-                DB::table('products')
-                ->where('products.id', $productId)
-                ->update(['products.stock' => $counter--]);
+        $order = DB::table('carts')
+        ->select('carts.quantity','carts.product_id')
+        ->where('user_id', 'like', '%' .$user->id. '%')
+        ->get();
 
-                DB::table('carts')
-                ->where('user_id', 'like', '%' .$user->id. '%')
-                ->delete();
-            }
-            catch(Exception $e)
-            {
-                throw $e;
-            }
+        
+        try
+        {
 
-            return response()->json(['status' => 200000]);
-        });
+            DB::transaction(function () use($product,$counter,$user,$productInfo,$order,$fromView,$carts){
+                if($fromView=='productInfoView'){
+                    $product->update([
+                        'stock' => $product->stock - $counter
+                    ]);
+                }
+                if($fromView=='cartView')
+                {
+                    $product->update([
+                        'stock' => $product->stock - $order->quantity    
+                    ])
+                    ->where($product->id,'=',$order->product_id);
+                    DB::table('carts')
+                    ->delete()
+                    ->where('user_id','like', '%' .$user->id. '%');
+                }                
+            });
+        }
+        catch (Exception $e)
+        {
+            throw $e;
+        }
+        return response()->json(['product' => $product]);
     }
+    // public function cartBuySuccess(Request $request) 
+    // {
+    //     \Log::debug('bbb');
+    //     $cartInfo = $request['carts'];
+    //     \Log::debug($cartInfo);
+    //     //$product = Product::find($productInfo);
+    //     //\Log::debug($productInfo);
+    //     $user = Auth::user();
+    //     \Log::debug($user);
+
+         
+    // //     try
+    // //     {
+
+    // //         DB::transaction(function () use($product,$user,$productInfo){
+                
+    // //             $product->update([
+    // //                 'stock' => $product->stock - $counter
+    // //             ]);
+    // //             DB::table('carts')
+    // //             ->delete()
+    // //             ->where('user_id', 'like', '%' .$user->id. '%');
+                                
+    // //         });
+    // //     }
+    // //     catch (Exception $e)
+    // //     {
+    // //         throw $e;
+    // //     }
+    // //     return response()->json(['product' => $product]);
+    // }
 
 }

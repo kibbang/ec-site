@@ -33,8 +33,8 @@
           {{card.number}}
         </option>
       </select>
-    </div>
-    <button @click="buy()">Buy</button> 
+    </div>    
+    <button @click="buyProduct">Buy</button> 
   </div>
 </template>
 
@@ -59,28 +59,47 @@
       }
     },
     methods:{
-      buy: function(){
-        if(this.counter==0)
-        {
-          alert('Please Select Order Quantity')
-          return
-        }
+      buyProduct: function(){
+        if(this.fromView=='productInfoView')
+        {        
+          if(this.counter==0)
+          {
+            alert('Please Select Order Quantity')
+            return
+          }
+        }          
         else
         {
           alert('Buy Successful!')
-          return this.$router.push({name: 'home'})
         }
-        axios.post('api/product/list',{
-          product: this.product,
-          counter: this.counter
+        //DB Change//
+        axios.post('/api/account/stock/' + this.id,{
+          counter:this.counter,
+          fromView:this.fromView
         })
         .then(response =>{
           this.product = response.data.product
           this.counter = response.data.counter
-          console.log(response.data)
+          this.fromView = response.data.fromView
+
         })
         .catch(error => console.log(error));
-      
+        this.$router.push({name: 'home'})
+        if(this.fromView=='cartView')
+        {
+          // axios.post('/api/account/stock')
+          // .then(response => {
+          //   this.carts = response.data.carts
+          //   console.log(response.data)
+          //   //console.log(response.data.product)
+          // })
+          // .catch(error => console.log(error))
+          // axios.delete('/api/account/cart')
+          // .then(response =>{
+          //   this.carts = response.data.carts
+          // })
+          // .catch(error=>console.log(error));
+        }
       },
       quantityDecrease: function(){
         if(this.counter <= 0){

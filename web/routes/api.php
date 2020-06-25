@@ -47,16 +47,22 @@ Route::post('/card', 'CardController@cardRegister');
 
 Route::get('/card','CardController@cardInfo');
 
+
 Route::post('/cart', 'CartController@addCart');
 
 Route::get('/cart', 'CartController@viewCart');
 
 Route::delete('/cart/{cart}', 'CartController@deleteCart');
 
+
 Route::get('/account', 'AccountController@showCartPrice');
 
 Route::get('/account/{product}', 'AccountController@showDirectBuyPrice');
 
-Route::get('/account', 'AccountController@cardSelect');
+Route::get('/account/card', 'AccountController@cardSelect'); 
 
-Route::post('/product/list', 'AccountController@buySuccess');
+Route::post('/account/stock/{product}', 'AccountController@buySuccess');
+
+
+Route::post('/account/stock', 'AccountController@cartBuySuccess');
+Route::delete('account/cart', 'AccountController@cartBuySuccess');
