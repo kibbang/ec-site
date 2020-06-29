@@ -61,8 +61,6 @@ Route::get('/account/{product}', 'AccountController@showDirectBuyPrice');
 
 Route::get('/account/card', 'AccountController@cardSelect'); 
 
-Route::post('/account/stock/{product}', 'AccountController@buySuccess');
+Route::post('/account/stock/{product}', 'AccountController@directBuy');
 
-
-Route::post('/account/stock', 'AccountController@cartBuySuccess');
-//Route::delete('account/cart', 'AccountController@cartBuySuccess');
+Route::post('/account/cart', 'AccountController@cartBuy');

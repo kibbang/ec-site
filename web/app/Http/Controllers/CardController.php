@@ -32,10 +32,9 @@ class CardController extends Controller
         $cards = DB::table('cards')
         ->join('users','users.id', 'cards.user_id')
         ->select('cards.*')
-        ->where('user_id', 'like', '%' .$user->id. '%')
+        ->where('user_id', '=', $user->id)
         ->get();
         
-
         return response()->json(['cards' => $cards]);
     }
 }

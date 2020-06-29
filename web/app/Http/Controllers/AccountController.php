@@ -22,6 +22,7 @@ class AccountController extends Controller
     public function showDirectBuyPrice(Request $request, string $productId )
 
     {
+        $fromView = $request->fromView;
         $product = DB::table('products')
         ->join('product_images', 'product_images.product_id', 'products.id')
         ->select('products.*', 'product_images.image_url')
@@ -31,92 +32,81 @@ class AccountController extends Controller
         return response()->json(['product' => $product]);
     }
 
-    /////以下はまだ進行中です。/////
     public function cardSelect(Request $request)
     {
         $user = Auth::user();
         $cards = DB::table('cards')
         ->join('users', 'users.id', 'cards.user_id')
         ->select('cards.id', 'cards.number')
-        ->where('user_id', 'like', '%' .$user->id. '%')
+        ->where('user_id', '=', $user->id)
         ->get();
-        
+
         return response()->json(['cards' => $cards]);
     }
 
-    public function buySuccess(Request $request) 
-    {
-        
+    public function directBuy(Request $request) 
+    {        
         $counter = $request->counter;        
         $user = Auth::user();
         $productInfo = $request['product'];
         $product = Product::find($productInfo);
-
         $fromView = $request->fromView;
 
-        $order = DB::table('carts')
-        ->select('carts.quantity','carts.product_id')
-        ->where('user_id', 'like', '%' .$user->id. '%')
-        ->get();
-
-        
         try
         {
-
-            DB::transaction(function () use($product,$counter,$user,$productInfo,$order,$fromView){
+            DB::transaction(function () use($product,$counter,$user,$productInfo,$fromView){
                 if($fromView=='productInfoView'){
                     $product->update([
                         'stock' => $product->stock - $counter
                     ]);
                 }
-                if($fromView=='cartView')
-                {
-                    $product->update([
-                        'stock' => $product->stock - $order->quantity    
-                    ])
-                    ->where($product->id,'=',$order->product_id);
-                    DB::table('carts')
-                    ->delete()
-                    ->where('user_id','like', '%' .$user->id. '%');
-                }                
             });
         }
+
         catch (Exception $e)
         {
             throw $e;
         }
+
         return response()->json(['product' => $product]);
     }
-    // public function cartBuySuccess(Request $request) 
-    // {
-    //     \Log::debug('bbb');
-    //     $cartInfo = $request['carts'];
-    //     \Log::debug($cartInfo);
-    //     //$product = Product::find($productInfo);
-    //     //\Log::debug($productInfo);
-    //     $user = Auth::user();
-    //     \Log::debug($user);
 
-         
-    // //     try
-    // //     {
+    public function cartBuy(Request $request)
+    {
+        
+        $fromView = $request->fromView;
+        $user = Auth::user();
+        $cartInfo = DB::table('carts')
+        ->join('products','products.id','carts.product_id')
+        ->select('carts.quantity','carts.product_id','products.stock')
+        ->where('user_id', '=', $user->id)
+        ->get();
+        
+        try
+        {
+            DB::transaction(function () use($fromView,$cartInfo,$user){
+                if($fromView=='cartView'){
+                    foreach($cartInfo as $key => $newStock){
+                        
+                        $newStock = $cartInfo[$key]->stock - $cartInfo[$key]->quantity;
+                        
+                        Product::where('products.id', '=', $cartInfo[$key]->product_id )
+                        ->update([
+                            'stock' =>  $newStock
+                        ]);                            
+                    }   
+                    DB::table('carts')
+                    ->where('user_id', '=', $user->id)
+                    ->delete();                   
+                }
+            });
+        }
 
-    // //         DB::transaction(function () use($product,$user,$productInfo){
-                
-    // //             $product->update([
-    // //                 'stock' => $product->stock - $counter
-    // //             ]);
-    // //             DB::table('carts')
-    // //             ->delete()
-    // //             ->where('user_id', 'like', '%' .$user->id. '%');
-                                
-    // //         });
-    // //     }
-    // //     catch (Exception $e)
-    // //     {
-    // //         throw $e;
-    // //     }
-    // //     return response()->json(['product' => $product]);
-    // }
+        catch (Exception $e)
+        {
+            throw $e;
+        }
 
+        return response()->json(['status' => 20000]);
+    }
 }

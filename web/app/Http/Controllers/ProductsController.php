@@ -103,7 +103,7 @@ class ProductsController extends Controller
     {
         $productInfo = $request['product'];
 
-        $product = Product::find($productInfo['id']); 
+        $product = Product::find($productInfo['id']);
         
         $product->update([
             'name' => $productInfo['name'],
