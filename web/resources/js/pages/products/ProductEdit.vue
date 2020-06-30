@@ -43,6 +43,7 @@
       }
     },
     methods:{
+      //商品情報の変更
       updateProduct(){
         axios.post('/api/product/update',{
           product: this.product

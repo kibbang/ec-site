@@ -20,9 +20,8 @@ import CardRegister from './pages/CardRegister.vue'
 
 import Cart from './pages/Cart.vue'
 
-import Account from './pages/Account.vue'
-import accountProduct from './pages/Account.vue'
-import accountCart from './pages/Account.vue'
+import accountProduct from './pages/AccountProduct.vue'
+import accountCart from './pages/AccountCart.vue'
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -79,12 +78,6 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: Cart,
-  },
-
-  {
-    path: '/account',
-    name: 'account',
-    component: Account
   },
 
   {

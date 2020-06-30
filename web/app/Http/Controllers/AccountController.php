@@ -10,56 +10,18 @@ use Auth;
 
 class AccountController extends Controller
 {
-    //
-    public function showCartPrice(Request $request)
-
-    {
-        $carts = $request['carts'];
-        
-        return response()->json(['carts' => $carts]);
-    }
-
-    public function showDirectBuyPrice(Request $request, string $productId )
-
-    {
-        $fromView = $request->fromView;
-        $product = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url')
-        ->where('products.id', $productId)
-        ->first();
-
-        return response()->json(['product' => $product]);
-    }
-
-    public function cardSelect(Request $request)
-    {
-        $user = Auth::user();
-        $cards = DB::table('cards')
-        ->join('users', 'users.id', 'cards.user_id')
-        ->select('cards.id', 'cards.number')
-        ->where('user_id', '=', $user->id)
-        ->get();
-
-        return response()->json(['cards' => $cards]);
-    }
-
-    public function directBuy(Request $request) 
+    //商品をカートに入れずに直接購入する場合実行
+    public function directBuy(Request $request, $id) 
     {        
         $counter = $request->counter;        
-        $user = Auth::user();
-        $productInfo = $request['product'];
-        $product = Product::find($productInfo);
-        $fromView = $request->fromView;
-
+        $product = Product::find($id);
+                
         try
         {
-            DB::transaction(function () use($product,$counter,$user,$productInfo,$fromView){
-                if($fromView=='productInfoView'){
-                    $product->update([
-                        'stock' => $product->stock - $counter
-                    ]);
-                }
+            DB::transaction(function () use($product,$counter){
+                $product->update([
+                    'stock' => $product->stock - $counter
+                ]);                
             });
         }
 
@@ -68,13 +30,12 @@ class AccountController extends Controller
             throw $e;
         }
 
-        return response()->json(['product' => $product]);
+        return response()->json(['status' => 20000]);
     }
 
+    //カートにある商品を購入する場合に実行
     public function cartBuy(Request $request)
     {
-        
-        $fromView = $request->fromView;
         $user = Auth::user();
         $cartInfo = DB::table('carts')
         ->join('products','products.id','carts.product_id')
@@ -84,13 +45,12 @@ class AccountController extends Controller
         
         try
         {
-            DB::transaction(function () use($fromView,$cartInfo,$user){
-                if($fromView=='cartView'){
-                    foreach($cartInfo as $key => $newStock){
+            DB::transaction(function () use($cartInfo,$user){
+                    foreach($cartInfo as $key => $orderInfo){
                         
-                        $newStock = $cartInfo[$key]->stock - $cartInfo[$key]->quantity;
+                        $newStock = $orderInfo->stock - $orderInfo->quantity;
                         
-                        Product::where('products.id', '=', $cartInfo[$key]->product_id )
+                        Product::where('products.id', '=', $orderInfo->product_id )
                         ->update([
                             'stock' =>  $newStock
                         ]);                            
@@ -98,7 +58,7 @@ class AccountController extends Controller
                     DB::table('carts')
                     ->where('user_id', '=', $user->id)
                     ->delete();                   
-                }
+                
             });
         }
 

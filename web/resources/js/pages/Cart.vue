@@ -7,13 +7,13 @@
         <p> Product Name: {{ cart.name }} </p>
         <p> Product Price($): {{ cart.price }} </p>
         <p> Order Quantity: {{ cart.quantity }} </p>
-        <strong> Total Price($): {{ cart.quantity*cart.price }} </strong>
+        <strong> Total Price($): {{ cart.quantity * cart.price }} </strong>
         <br>
         <button class="btn btn-danger" @click="cartDelete(cart.id)">Delete</button>
       </li> 
     </ul>
     
-    <button @click="goToAccountView()">Buy</button>  
+    <button @click="goToAccountView">Buy</button>  
   </div>
 </template>
 

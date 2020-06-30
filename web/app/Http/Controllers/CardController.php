@@ -9,7 +9,7 @@ use DB;
 
 class CardController extends Controller
 {
-    //
+    //カード登録
     public function cardRegister(Request $request)
     {
         
@@ -24,14 +24,14 @@ class CardController extends Controller
         ]);
 
         return response()->json(['card' => $card]);
-    }        
+    } 
 
+    //カード番号の表示(カード選択のため)
     public function cardInfo()
     {
         $user = Auth::user();
         $cards = DB::table('cards')
-        ->join('users','users.id', 'cards.user_id')
-        ->select('cards.*')
+        ->select('cards.number')
         ->where('user_id', '=', $user->id)
         ->get();
         
