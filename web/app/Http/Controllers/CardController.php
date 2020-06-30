@@ -9,7 +9,9 @@ use DB;
 
 class CardController extends Controller
 {
-    /**カード登録**/
+    /**
+     * カード登録
+     */
     public function cardRegister(Request $request)
     {
         
@@ -26,7 +28,9 @@ class CardController extends Controller
         return response()->json(['card' => $card]);
     } 
 
-    /**カード番号の表示(カード選択のため)**/
+    /**
+     * カード番号の表示(カード選択のため)
+     */
     public function cardInfo()
     {
         $user = Auth::user();

@@ -69,11 +69,13 @@ const routes = [
     name: 'card',
     component: Card,
   },
+
   {
     path: '/card/register',
     name: 'cardRegister',
     component: CardRegister,
   },
+  
   {
     path: '/cart',
     name: 'cart',

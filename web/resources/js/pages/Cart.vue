@@ -34,7 +34,7 @@
       });
     },
     methods:{
-      /**カート情報削除**/
+      //カート情報削除
       cartDelete(id){
         axios.delete('/api/cart/' + id)
         .then(response => {

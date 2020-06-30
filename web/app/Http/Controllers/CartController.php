@@ -9,7 +9,9 @@ use DB;
 
 class CartController extends Controller
 {
-    /**商品をカートに追加*/
+    /**
+     * 商品をカートに追加/
+     */
     function addCart(Request $request)
     {        
         $user = Auth::user();
@@ -27,7 +29,9 @@ class CartController extends Controller
         return response()->json(['cart' => $cart]);
     }
 
-    /**カートにある商品表示**/
+    /**
+     * カートにある商品表示
+     */
     function viewCart(Request $request)
     {
         $user = Auth::user();
@@ -43,7 +47,9 @@ class CartController extends Controller
         return response()->json(['carts'=>$carts]);
     }
 
-    /**カートにある商品を削除**/
+    /**
+     * カートにある商品を削除     
+     */
     function deleteCart(Cart $cart)
     {
         $cart->delete();

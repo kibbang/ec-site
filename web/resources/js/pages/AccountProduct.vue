@@ -38,7 +38,7 @@
       }
     },
     methods:{
-      /**商品を購入する際に必要となるalertと購入処理**/
+      //商品を購入する際に必要となるalertと購入処理
       buyProduct: function(){
         if(this.select == '')
         {
@@ -52,7 +52,7 @@
           return
         }
 
-        /**DB Change**/
+        //DB Change
         axios.post('/api/account/stock/' + this.id,{
           counter:this.counter,
         })

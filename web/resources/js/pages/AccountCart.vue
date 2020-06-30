@@ -39,7 +39,7 @@
       }
     },
     computed: {
-      /**カートのある物の総価格を表示する処理**/
+      //カートのある物の総価格を表示する処理
       cartTotal(){
         if(this.fromView=='cartView'){
           return this.carts.reduce((total, cart) => {
@@ -49,7 +49,7 @@
       }
     },
     methods:{
-      /**商品を購入する際に必要となるalertと購入処理**/
+      //商品を購入する際に必要となるalertと購入処理
       buyProduct: function(){
         if(this.select == '')
         {
@@ -57,7 +57,7 @@
           return
         }
         
-        /**DB Change**/   
+        //DB Change   
         axios.post('/api/account/cart')
         .then(
           alert("Buy Successful!"),

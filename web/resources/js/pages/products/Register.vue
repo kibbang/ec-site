@@ -61,7 +61,7 @@
     },
     methods:{
       async productRegister(){
-        /**画像を登録する処理**/
+        //画像を登録する処理
         const formData = new FormData()
         formData.append('file',this.file_info)
         formData.append('product_image', JSON.stringify(this.file_info))
@@ -70,14 +70,13 @@
         })
         .then(response => {
           this.product_image.image_url = response.data.image_url;
-          //this.$router.push('/product/list')
         })
         .catch(error => console.log(error));
         
         if (!this.product_image.image_url) {
           return
         }
-        /**DBに登録する処理**/
+        //DBに登録する処理
         await axios.post('/api/product/register',{
           product: this.product,
           product_image: this.product_image

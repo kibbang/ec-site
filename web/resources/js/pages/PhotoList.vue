@@ -27,7 +27,7 @@
       }
     },
     methods:{
-      /**商品検索処理**/
+      //商品検索処理
       searchProduct(){
         axios.get('/api/product/list',{
           params:{
