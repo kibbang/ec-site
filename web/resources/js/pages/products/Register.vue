@@ -70,7 +70,6 @@
         })
         .then(response => {
           this.product_image.image_url = response.data.image_url;
-          //this.$router.push('/product/list')
         })
         .catch(error => console.log(error));
         

@@ -9,12 +9,17 @@ use DB;
 
 class CartController extends Controller
 {
-    //
+    /**
+     * 商品をカートに追加
+     * 
+     * @param Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     function addCart(Request $request)
     {        
         $user = Auth::user();
         
-        $product = $request['product']; //리퀘스트 요청한 product의 정보가 배열형태로 들어가있음
+        $product = $request['product'];
 
         $quantity = $request->counter;
     
@@ -27,6 +32,12 @@ class CartController extends Controller
         return response()->json(['cart' => $cart]);
     }
 
+    /**
+     * カートにある商品表示
+     * 
+     * @param Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     function viewCart(Request $request)
     {
         $user = Auth::user();
@@ -34,14 +45,20 @@ class CartController extends Controller
         $cartInfo = DB::table('carts')
         ->join('products','products.id','carts.product_id')
         ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('carts.*', 'products.name', 'products.price', 'product_images.image_url')
-        ->where('user_id', 'like', '%' .$user->id. '%');
+        ->select('carts.*', 'products.name', 'products.price', 'product_images.image_url', 'products.stock')
+        ->where('user_id', '=', $user->id);
 
         $carts = $cartInfo->get();
 
         return response()->json(['carts'=>$carts]);
     }
 
+    /**
+     * カートにある商品を削除
+     * 
+     * @param \App\Cart $cart
+     * @return \Illuminate\Http\Response     
+     */
     function deleteCart(Cart $cart)
     {
         $cart->delete();

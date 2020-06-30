@@ -7,13 +7,13 @@
         <p> Product Name: {{ cart.name }} </p>
         <p> Product Price($): {{ cart.price }} </p>
         <p> Order Quantity: {{ cart.quantity }} </p>
-        <strong> Total Price($): {{ cart.quantity*cart.price }} </strong>
+        <strong> Total Price($): {{ cart.quantity * cart.price }} </strong>
         <br>
         <button class="btn btn-danger" @click="cartDelete(cart.id)">Delete</button>
       </li> 
     </ul>
     
-    <button>Buy</button>  
+    <button @click="goToAccountView">Buy</button>  
   </div>
 </template>
 
@@ -34,6 +34,7 @@
       });
     },
     methods:{
+      // カート情報削除
       cartDelete(id){
         axios.delete('/api/cart/' + id)
         .then(response => {
@@ -42,6 +43,10 @@
         })
         .catch(error => console.log(error));
       },
+      goToAccountView(){
+        // fromView cartView or productInfoView
+        this.$router.push({name:'accountCart',params:{fromView:'cartView'}})
+      }
     }
   }
 </script>

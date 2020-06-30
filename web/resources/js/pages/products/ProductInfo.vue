@@ -9,9 +9,9 @@
         <li>Product Description: {{ product.description }}</li>
         <router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
         <span v-if="!isAdmin">
-          <button class="btn btn-primary">Buy</button>
+          <button @click="goToAccountView" class="btn btn-primary">Buy</button>
           <button v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
-          <p> Added Quantity: {{ counter }} </p>
+          <p> Added Cart Quantity: {{ counter }} </p>
           <p> Total Price($): {{ counter * product.price }} </p> 
           <br>
           <button v-if="!counter==0" class="btn btn-primary" @click.prevent="AddCart()">Go to Cart</button>
@@ -48,6 +48,7 @@
       .catch(error => console.log(error));
     },
     methods:{
+      // カートに追加する処理
       AddCart(){
         axios.post('/api/cart',{
           cart:this.cart,
@@ -61,6 +62,10 @@
           this.$router.push({ name:'cart' })
         })
         .catch(error => console.log(error));
+      },
+      goToAccountView(){
+        // fromView cartView or productInfoView
+        this.$router.push({name:'accountProduct',params:{fromView:'productInfoView'}})
       }
     }
   }

@@ -97,16 +97,18 @@
           if(this.isAdmin) {
             // 管理者は管理ページに遷移
             this.$router.push({ name:'product' })
-          } else {
+          }
+          else
+          {
             // 一般ユーザーはトップページに移動する
             this.$router.push({ name:'home' })
           }
         }
       },
       async register () {
-        // authストアのresigterアクションを呼び出す
+        // authストアのresigterアクションを呼び出す 
         await this.$store.dispatch('auth/register', this.registerForm)
-        if (this.apiStatus) {
+        if (this.apiStatus){
           // トップページに移動する
           this.$router.push({ name:'home' })
         }

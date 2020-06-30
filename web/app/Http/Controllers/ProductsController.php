@@ -9,7 +9,12 @@ use DB;
 
 class ProductsController extends Controller
 {
-    //Product Register
+    /**
+     * 商品登録
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function productRegister(Request $request)
     {
         $data = $request->all();
@@ -30,7 +35,12 @@ class ProductsController extends Controller
         return response()->json(['status' => 200000]);
     
     }
-    //
+    /**
+     * 商品情報の表示
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function productList(Request $request)
     {
         $data = $request->all();
@@ -44,7 +54,13 @@ class ProductsController extends Controller
 
         return response()->json(['products' => $products]);
     }
-    //
+
+    /**
+     * 商品画像登録
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function imageUpload(Request $request)
     {
         
@@ -87,7 +103,12 @@ class ProductsController extends Controller
         
         return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
     }
-    //
+
+    /**
+     * 商品詳細情報
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
     public function productDetail($id)
     {
         $product = DB::table('products')
@@ -98,12 +119,18 @@ class ProductsController extends Controller
 
         return response()->json(['product' => $product]);
     }
-    //
+
+    /**
+     * 商品情報の変更
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function productUpdate(Request $request)
     {
         $productInfo = $request['product'];
 
-        $product = Product::find($productInfo['id']); 
+        $product = Product::find($productInfo['id']);
         
         $product->update([
             'name' => $productInfo['name'],
@@ -112,10 +139,15 @@ class ProductsController extends Controller
             'description' => $productInfo['description']
         ]);
 
-        return response()->json(['product' => $product]);
-        
+        return response()->json(['product' => $product]);       
     }
-    //
+    /**
+     * 商品情報の変更のための商品情報の表示
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $productId
+     * @return \Illuminate\Http\Response
+     */
     public function productInfo(Request $request, string $productId)
     {
         $product = DB::table('products')

@@ -31,6 +31,7 @@
       }
     },
     methods:{
+      // カード登録処理
       CardRegister(){
         axios.post('/api/card',{
           card: this.card,
