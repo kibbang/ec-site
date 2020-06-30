@@ -10,7 +10,7 @@ use Auth;
 
 class AccountController extends Controller
 {
-    //商品をカートに入れずに直接購入する場合実行
+    /**商品をカートに入れずに直接購入する場合実行**/
     public function directBuy(Request $request, $id) 
     {        
         $counter = $request->counter;        
@@ -33,7 +33,7 @@ class AccountController extends Controller
         return response()->json(['status' => 20000]);
     }
 
-    //カートにある商品を購入する場合に実行
+    /**カートにある商品を購入する場合に実行**/
     public function cartBuy(Request $request)
     {
         $user = Auth::user();
@@ -45,20 +45,20 @@ class AccountController extends Controller
         
         try
         {
-            DB::transaction(function () use($cartInfo,$user){
-                    foreach($cartInfo as $key => $orderInfo){
+            DB::transaction(function () use($cartInfo,$user)
+            {
+                foreach($cartInfo as $key => $orderInfo)
+                {                       
+                    $newStock = $orderInfo->stock - $orderInfo->quantity;
                         
-                        $newStock = $orderInfo->stock - $orderInfo->quantity;
-                        
-                        Product::where('products.id', '=', $orderInfo->product_id )
-                        ->update([
-                            'stock' =>  $newStock
-                        ]);                            
-                    }   
-                    DB::table('carts')
-                    ->where('user_id', '=', $user->id)
-                    ->delete();                   
-                
+                    Product::where('products.id', '=', $orderInfo->product_id )
+                    ->update([
+                        'stock' =>  $newStock
+                    ]);                            
+                }   
+                DB::table('carts')
+                ->where('user_id', '=', $user->id)
+                ->delete();                                  
             });
         }
 

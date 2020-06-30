@@ -48,7 +48,7 @@
       .catch(error => console.log(error));
     },
     methods:{
-      //カートに追加する処理
+      /**カートに追加する処理**/
       AddCart(){
         axios.post('/api/cart',{
           cart:this.cart,

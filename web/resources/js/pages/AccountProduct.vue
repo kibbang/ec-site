@@ -12,7 +12,7 @@
       </ul>  
       <strong>Total Price($): {{ product.price * counter }} </strong>
     </div>
-    
+
     <div class="form-group">
       <select class="form-control" v-model="select">
         <option disabled value="">Please select Card</option>
@@ -38,7 +38,7 @@
       }
     },
     methods:{
-      //商品を購入する際に必要となるalertと購入処理
+      /**商品を購入する際に必要となるalertと購入処理**/
       buyProduct: function(){
         if(this.select == '')
         {
@@ -51,38 +51,36 @@
           alert('Please Select Order Quantity!')
           return
         }
-        else
-        {
-          alert('Buy Successful!')
-        }
-      
-        //DB Change//
+
+        /**DB Change**/
         axios.post('/api/account/stock/' + this.id,{
           counter:this.counter,
         })
-        .then(this.$router.push({name: 'home'}))
-        .catch(error => console.log(error));                 
+        .then(
+          alert("Buy Successful!"),
+          this.$router.push({name: 'home'})
+        )
+        .catch(error =>{
+          alert("Buy Failure")
+          console.log(error)
+        });                 
       },
       quantityDecrease: function(){
         if(this.counter <= 0){
           alert('Order quantity cannot be zero.')
-
           return 
         }
         this.counter--
       }         
     },
     async created(){
-      if(this.fromView=='productInfoView')
-      {
-        await axios.get('/api/product/list/'+this.id)
-        .then(response=>{
-          this.product = response.data.product
-          this.fromView = this.$route.params.fromView
-        })
-        .catch(error => console.log(error)); 
-      }
-
+      await axios.get('/api/product/list/'+this.id)
+      .then(response=>{
+        this.product = response.data.product
+        this.fromView = this.$route.params.fromView
+      })
+      .catch(error => console.log(error)); 
+      
       await axios.get('/api/card')
       .then(response=>{
         this.cards = response.data.cards

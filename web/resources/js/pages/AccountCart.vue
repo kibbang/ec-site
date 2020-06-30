@@ -3,7 +3,7 @@
     <div>
       <h1>Account</h1>
     </div>
-    <div v-if="fromView == 'cartView'">
+    <div>
       <ul style="list-style: none" v-for="cart in carts" :key="cart.id">
         <li>
           <img class="w-100" :src="cart.image_url" width="150px" height="100px"  alt />
@@ -34,14 +34,12 @@
         id: this.$route.params.id,
         carts:[],
         cards:[],
-        //product:'',
         fromView: this.$route.params.fromView,
         select:'',
-        //counter: 0
       }
     },
     computed: {
-      //カートのある物の総価格を表示する処理
+      /**カートのある物の総価格を表示する処理**/
       cartTotal(){
         if(this.fromView=='cartView'){
           return this.carts.reduce((total, cart) => {
@@ -51,21 +49,24 @@
       }
     },
     methods:{
-      //商品を購入する際に必要となるalertと購入処理
+      /**商品を購入する際に必要となるalertと購入処理**/
       buyProduct: function(){
         if(this.select == '')
         {
           alert('Please Select Card First!')
           return
         }
-        else
-        {
-          alert('Buy Successful!')
-        }
-        //DB Change//   
+        
+        /**DB Change**/   
         axios.post('/api/account/cart')
-        .then(this.$router.push({name: 'home'}))          
-        .catch(error => console.log(error));  
+        .then(
+          alert("Buy Successful!"),
+          this.$router.push({name: 'home'})
+        )
+        .catch(error =>{
+          alert("Buy Failure")
+          console.log(error)
+        });             
       }
     },
     async created(){

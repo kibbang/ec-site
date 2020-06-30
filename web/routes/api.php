@@ -55,12 +55,6 @@ Route::get('/cart', 'CartController@viewCart');
 Route::delete('/cart/{cart}', 'CartController@deleteCart');
 
 
-Route::get('/account', 'AccountController@showCartPrice');
-
-Route::get('/account/{product}', 'AccountController@showDirectBuyPrice');
-
-Route::get('/account/card', 'AccountController@cardSelect'); 
-
 Route::post('/account/stock/{product}', 'AccountController@directBuy');
 
 Route::post('/account/cart', 'AccountController@cartBuy');
