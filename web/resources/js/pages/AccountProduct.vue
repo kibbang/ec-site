@@ -65,6 +65,7 @@
           console.log(error)
         });                 
       },
+      //数量を減らす処理(０以下は不可)
       quantityDecrease: function(){
         if(this.counter <= 0){
           alert('Order quantity cannot be zero.')
