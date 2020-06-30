@@ -11,6 +11,9 @@ class ProductsController extends Controller
 {
     /**
      * 商品登録
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function productRegister(Request $request)
     {
@@ -34,6 +37,9 @@ class ProductsController extends Controller
     }
     /**
      * 商品情報の表示
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function productList(Request $request)
     {
@@ -51,6 +57,9 @@ class ProductsController extends Controller
 
     /**
      * 商品画像登録
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function imageUpload(Request $request)
     {
@@ -97,6 +106,8 @@ class ProductsController extends Controller
 
     /**
      * 商品詳細情報
+     * @param int $id
+     * @return \Illuminate\Http\Response
      */
     public function productDetail($id)
     {
@@ -111,6 +122,9 @@ class ProductsController extends Controller
 
     /**
      * 商品情報の変更
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function productUpdate(Request $request)
     {
@@ -129,6 +143,10 @@ class ProductsController extends Controller
     }
     /**
      * 商品情報の変更のための商品情報の表示
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $productId
+     * @return \Illuminate\Http\Response
      */
     public function productInfo(Request $request, string $productId)
     {

@@ -10,7 +10,10 @@ use DB;
 class CartController extends Controller
 {
     /**
-     * 商品をカートに追加/
+     * 商品をカートに追加
+     * 
+     * @param Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     function addCart(Request $request)
     {        
@@ -31,6 +34,9 @@ class CartController extends Controller
 
     /**
      * カートにある商品表示
+     * 
+     * @param Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     function viewCart(Request $request)
     {
@@ -48,7 +54,10 @@ class CartController extends Controller
     }
 
     /**
-     * カートにある商品を削除     
+     * カートにある商品を削除
+     * 
+     * @param \App\Cart $cart
+     * @return \Illuminate\Http\Response     
      */
     function deleteCart(Cart $cart)
     {

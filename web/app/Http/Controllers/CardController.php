@@ -11,6 +11,9 @@ class CardController extends Controller
 {
     /**
      * カード登録
+     * 
+     * @param Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function cardRegister(Request $request)
     {
@@ -30,8 +33,11 @@ class CardController extends Controller
 
     /**
      * カード番号の表示(カード選択のため)
+     * 
+     * @param Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
-    public function cardInfo()
+    public function cardInfo(Request $request)
     {
         $user = Auth::user();
         $cards = DB::table('cards')

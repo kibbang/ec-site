@@ -48,7 +48,7 @@
       .catch(error => console.log(error));
     },
     methods:{
-      //カートに追加する処理
+      // カートに追加する処理
       AddCart(){
         axios.post('/api/cart',{
           cart:this.cart,
@@ -64,7 +64,7 @@
         .catch(error => console.log(error));
       },
       goToAccountView(){
-        //fromView cartView or productInfoView
+        // fromView cartView or productInfoView
         this.$router.push({name:'accountProduct',params:{fromView:'productInfoView'}})
       }
     }

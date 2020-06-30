@@ -34,7 +34,7 @@
       });
     },
     methods:{
-      //カート情報削除
+      // カート情報削除
       cartDelete(id){
         axios.delete('/api/cart/' + id)
         .then(response => {
@@ -44,7 +44,7 @@
         .catch(error => console.log(error));
       },
       goToAccountView(){
-        //fromView cartView or productInfoView
+        // fromView cartView or productInfoView
         this.$router.push({name:'accountCart',params:{fromView:'cartView'}})
       }
     }

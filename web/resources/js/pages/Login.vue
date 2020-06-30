@@ -90,26 +90,26 @@
     },
     methods: {
       async login () {
-        //authストアのloginアクションを呼び出す
+        // authストアのloginアクションを呼び出す
         await this.$store.dispatch('auth/login', this.loginForm)
         console.log(this.apiStatus, this.isAdmin)
         if (this.apiStatus) {
           if(this.isAdmin) {
-            //管理者は管理ページに遷移
+            // 管理者は管理ページに遷移
             this.$router.push({ name:'product' })
           }
           else
           {
-            //一般ユーザーはトップページに移動する
+            // 一般ユーザーはトップページに移動する
             this.$router.push({ name:'home' })
           }
         }
       },
       async register () {
-        //authストアのresigterアクションを呼び出す 
+        // authストアのresigterアクションを呼び出す 
         await this.$store.dispatch('auth/register', this.registerForm)
         if (this.apiStatus){
-          //トップページに移動する
+          // トップページに移動する
           this.$router.push({ name:'home' })
         }
       },
