@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\ProductImage;
 use DB;
+use Storage;
 
 class ProductsController extends Controller
 {
@@ -62,11 +63,7 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function imageUpload(Request $request)
-    {
-        
-        //$file_name = $request->file->getClientOriginalName();
-       // \Log::debug(getClientOriginalName());
-        //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
+    {        
         $storage = 'public';
         $base64Context = $request['file_info'];
         $dir = '/';
@@ -74,7 +71,7 @@ class ProductsController extends Controller
         try 
         {
             preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
-            $extension = $matches[1];
+            $extension = $matches[0];
 
             $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
             $img = str_replace(' ', '+', $img);
@@ -103,6 +100,7 @@ class ProductsController extends Controller
         
         return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
     }
+    
 
     /**
      * 商品詳細情報

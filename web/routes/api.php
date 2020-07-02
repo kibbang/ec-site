@@ -52,6 +52,8 @@ Route::post('/cart', 'CartController@addCart');
 
 Route::get('/cart', 'CartController@viewCart');
 
+Route::post('/cart/update', 'Cartcontroller@updateCart');
+
 Route::delete('/cart/{cart}', 'CartController@deleteCart');
 
 

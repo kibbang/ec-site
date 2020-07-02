@@ -10,7 +10,8 @@
         <router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
         <span v-if="!isAdmin">
           <button @click="goToAccountView" class="btn btn-primary">Buy</button>
-          <button v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
+          <button v-if="isLogin" v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
+          <button v-else @click="userCheck" class="btn btn-danger">Add Cart</button>
           <p> Added Cart Quantity: {{ counter }} </p>
           <p> Total Price($): {{ counter * product.price }} </p> 
           <br>
@@ -31,6 +32,9 @@
     computed: {
       isAdmin(){
         return this.$store.getters['auth/admin']
+      },
+      isLogin(){
+        return this.$store.getters['auth/check']
       }
     },
     data(){
@@ -66,6 +70,10 @@
       goToAccountView(){
         // fromView cartView or productInfoView
         this.$router.push({name:'accountProduct',params:{fromView:'productInfoView'}})
+      },
+      //ログインしていないユーザーのカート使用防止処理
+      userCheck(){
+        alert('You must login first');
       }
     }
   }

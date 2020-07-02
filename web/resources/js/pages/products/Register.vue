@@ -56,15 +56,15 @@
         product_image: {
           image_url: ''
         },
-        file_info: '',
+        file_info: [],
       }
     },
     methods:{
       async productRegister(){
         // 画像を登録する処理
         const formData = new FormData()
-        formData.append('file',this.file_info)
-        formData.append('product_image', JSON.stringify(this.file_info))
+        formData.append('file',this.file_info) // formData.append(key,value)
+        formData.append('product_image', JSON.stringify(this.file_info)) // formData.append(key,value)
         let data = await axios.post('/api/product/imageupload',{
           file_info: this.file_info
         })
@@ -95,12 +95,10 @@
       {
         console.log(e.target.files[0])
         var fileReader = new FileReader
-
         fileReader.readAsDataURL(e.target.files[0])
-
         fileReader.onload = (e) => {
           this.file_info = e.target.result
-        }
+        }              
       },
       // async fileUpload(){
       //   //console.log(update)
