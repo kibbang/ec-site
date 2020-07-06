@@ -19,6 +19,7 @@ class ProductsController extends Controller
     public function productRegister(Request $request)
     {
         $data = $request->all();
+        //\Log::debug($data);
 
         try
         {
@@ -63,26 +64,53 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function imageUpload(Request $request)
-    {        
+    {
+        
+        $file_info = $request['file_info'];  
+         
+        //$file_name = $request->file->getClientOriginalName();
+        foreach($file_info as $file)
+        {
+            $file_name = $file->getClientOriginalName();
+            $file->storeAs('',$file_name);
+            
+        }
+        dd($file_name);
+       // \Log::debug(getClientOriginalName());
+        //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
         $storage = 'public';
         $base64Context = $request['file_info'];
+        dd($request->all());
+        \Log::debug($request->file);
         $dir = '/';
 
         try 
-        {
+        {           
             preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
-            $extension = $matches[0];
+            foreach($matches as $base64Context){
+                $extension = $matches[1];
+                $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
+                $img = str_replace(' ', '+', $img);
+                $fileData = base64_decode($img);
+    
+                $dir = rtrim($dir, '/').'/';
+                $fileName = md5($img);
+                $path = $dir.$fileName.'.'.$extension;
+    
+                Storage::disk($storage)->put($path, $fileData);
+                
+            }
+            // $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
+            // $img = str_replace(' ', '+', $img);
+            // $fileData = base64_decode($img);
 
-            $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
-            $img = str_replace(' ', '+', $img);
-            $fileData = base64_decode($img);
+            // $dir = rtrim($dir, '/').'/';
+            // $fileName = md5($img);
+            // $path = $dir.$fileName.'.'.$extension;
 
-            $dir = rtrim($dir, '/').'/';
-            $fileName = md5($img);
-            $path = $dir.$fileName.'.'.$extension;
-
-            Storage::disk($storage)->put($path, $fileData);
-
+            // Storage::disk($storage)->put($path, $fileData);
+            
+            return response()->json(['image_url' => Storage::disk('public')->url($path)]);
         }
         catch (Exception $e)
         {
@@ -98,7 +126,7 @@ class ProductsController extends Controller
         //     Storage::disk('public')->put($file_name, $data);
         // }
         
-        return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
+        // return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
     }
     
 

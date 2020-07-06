@@ -10,7 +10,7 @@
         <input v-model="product.name">
       </div>
 
-      <p><input type="file" @change="imageChanged"></p>
+      <p><input type="file" ref="file" multiple enctype="multipart/form-data" @change="imageChanged"></p>
 
       <br>
 
@@ -63,17 +63,27 @@
       async productRegister(){
         // 画像を登録する処理
         const formData = new FormData()
-        formData.append('file',this.file_info) // formData.append(key,value)
-        formData.append('product_image', JSON.stringify(this.file_info)) // formData.append(key,value)
-        let data = await axios.post('/api/product/imageupload',{
-          file_info: this.file_info
-        })
+        //console.log(this.file_info)
+        for(let i=0; i<this.file_info.length; i++){
+          let file = this.file_info[i]
+          //console.log(file)
+          formData.append('file_info['+ i +']',file)
+          //formData.append('product_image', JSON.stringify(file_info))
+          //console.log(file)
+        }
+        let config = {
+          headers:{
+            'Content-Type': 'multipart/form-data'
+          },
+        }
+        let data = await axios.post('/api/product/imageupload', formData,config)
         .then(response => {
-          this.product_image.image_url = response.data.image_url;
+         this.product_image.image_url = response.data.image_url;
+          // console.log(this.file_info)
         })
         .catch(error => console.log(error));
         
-        if (!this.product_image.image_url) {
+        if (!this.file_info) {
           return
         }
         // DBに登録する処理
@@ -84,6 +94,7 @@
         .then(response => {
           this.product = response.data.product;
           this.$router.push({ name:'productAdmin' })
+          // console.log(this.product_image.image_url)
         })
         .catch(error => console.log(error));
       },
@@ -93,12 +104,33 @@
       // },
       imageChanged(e)
       {
-        console.log(e.target.files[0])
-        var fileReader = new FileReader
-        fileReader.readAsDataURL(e.target.files[0])
-        fileReader.onload = (e) => {
-          this.file_info = e.target.result
-        }              
+        // let selectedFiles = e.target.files;
+        //console.log(selectedFiles)
+        const file = e.target.files
+        for(let i = 0 ; i < file.length; i++){
+          this.file_info.push(file[i])
+
+          // var fileReader = new FileReader
+          // fileReader.readAsDataURL(file[i])
+          // fileReader.onload = (e) => {
+          //   this.file_info = e.target.result
+          // }
+          //console.log(file[i])
+        }
+
+        //console.log(this.file_info)
+        // console.log(e.target.files)
+        // console.log(file)
+
+        // console.log(this.product_image.image_url)
+
+        // console.log(selectedFiles)
+        // var fileReader = new FileReader
+        // fileReader.readAsDataURL(e.target.files[0])
+        // fileReader.onload = (e) => {
+        //   this.file_info = e.target.result
+        // }
+        // console.log(this.file_info)
       },
       // async fileUpload(){
       //   //console.log(update)
