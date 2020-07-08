@@ -18,12 +18,10 @@ class CartController extends Controller
     function addCart(Request $request)
     {        
         $user = Auth::user();
-        
-        
+                
         $product = $request['product'];
-        //\Log::debug($product);
+        
         $quantity = $request->counter;
-        //\Log::debug($quantity);
 
         $cartInfo = DB::table('carts')
         ->select('carts.quantity')
@@ -31,58 +29,21 @@ class CartController extends Controller
         ->where('product_id', '=', $product['id'])
         ->first();
 
-        \Log::debug(var_export($cartInfo,true));
-
-        // $cartInfo = Cart::find($productId);
-
-        //\Log::debug($cartInfo);
-
-        // $aaa = $cartInfo->quantity;
-        // \Log::debug($aaa);
-
-        $check = DB::table('carts')
-        ->select('*') 
-        ->where('user_id', '=', $user->id) 
-        ->where('carts.product_id', '=', $product['id'])
-        ->count();
-        \Log::debug(var_export($check, true));
-
-        if($check==0){
-            Cart::create([
+        if($cartInfo==null){
+            Cart::insert([
                 'user_id' => $user->id,
                 'product_id' => $product['id'],
                 'quantity' => $quantity
             ]);
         }
 
-        if($check==1){
+        if($cartInfo!==null){
             Cart::where('product_id', '=', $product['id'])
             ->where('user_id', '=', $user->id) 
             ->update([
                 'quantity' => $cartInfo->quantity + $quantity
             ]);
         }
-
-
-        // $cart = Cart::where(['carts.product_id', '=', $product['id'], ['user_id', '=', $user->id]])
-        // ->update([
-        //     'quantity' => $cart['quantity'] + $quantity
-        // ]);
-
-           
-
-        // 商品詳細取得
-        //　
-            
-        
-        // if($product['id'] == $cart->product_id)
-        // {
-        //     Cart::where('carts.product_id', '=', $product['id'])
-        //     ->update([
-        //         'quantity' => $cart->quantity + $quantity
-        //     ]);
-        // }
-        
 
         return response()->json(['status' => 20000]);
     }

@@ -23,7 +23,7 @@
     data(){
       return {
         search:'',
-        products:[]
+        products:[]       
       }
     },
     methods:{
@@ -36,7 +36,6 @@
         })
         .then(response => {
           this.products = response.data.products
-          console.log(response.data.products);
         })
         .catch(error => {
           console.log(error);
@@ -46,7 +45,7 @@
     created(){
       axios.get('/api/product/list')
       .then(response=>{
-        this.products = response.data.products;
+        this.products = response.data.products
       })
       .catch(error => {
         console.log(error)

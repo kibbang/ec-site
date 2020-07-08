@@ -53,13 +53,16 @@ class ProductsController extends Controller
     public function productList(Request $request)
     {
         $data = $request->all();
-        $query = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url');
+        // $query = DB::table('products')
+        // ->join('product_images', 'product_images.product_id', 'products.id')
+        // ->select('products.*', 'product_images.image_url');
+
+        $query = Product::select();
+
         if (!empty($data['search'])) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
-        $products = $query->get();
+        $products = $query->with('productImage')->get();
 
         return response()->json(['products' => $products]);
     }
@@ -103,11 +106,8 @@ class ProductsController extends Controller
      */
     public function productDetail($id)
     {
-        $product = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url')
-        ->where('products.id', $id)
-        ->first();
+        $query = Product::select()->where('id', '=', $id);
+        $product = $query->with('productImage')->first();
 
         return response()->json(['product' => $product]);
     }
@@ -142,11 +142,8 @@ class ProductsController extends Controller
      */
     public function productInfo(Request $request, string $productId)
     {
-        $product = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url')
-        ->where('products.id', $productId)
-        ->first();
+        $query = Product::select()->where('id', '=', $productId);
+        $product = $query->with('productImage')->first();
         
         return response()->json(['product' => $product]);
     }

@@ -10,7 +10,7 @@
         <input v-model="product.name">
       </div>
 
-      <p><input type="file" ref="file" multiple enctype="multipart/form-data" @change="imageChanged"></p>
+      <p><input type="file" ref="file" multiple enctype="multipart/form-data" @change="imageSelected"></p>
       <br>
 
       <div class="form-group">
@@ -71,7 +71,7 @@
         }
         let data = await axios.post('/api/product/imageupload', formData,config)
         .then(response => {
-         this.image_url = response.data.image_url;
+          this.image_url = response.data.image_url;
         })
         .catch(error => console.log(error));
         
@@ -85,13 +85,13 @@
         })
         .then(response => {
           this.product = response.data.product;
-          console.log(this.image_url)
           this.$router.push({ name:'productAdmin' })
         })
         .catch(error => console.log(error));
       },
       
-      imageChanged(e)
+      // 画像選択のため
+      imageSelected(e)
       {       
         const file = e.target.files
         for(let i = 0 ; i < file.length; i++){
