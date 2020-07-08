@@ -37,7 +37,7 @@ class CartController extends Controller
             ]);
         }
 
-        if($cartInfo!==null){
+        else{
             Cart::where('product_id', '=', $product['id'])
             ->where('user_id', '=', $user->id) 
             ->update([
