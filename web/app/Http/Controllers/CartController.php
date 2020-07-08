@@ -18,18 +18,34 @@ class CartController extends Controller
     function addCart(Request $request)
     {        
         $user = Auth::user();
-        
+                
         $product = $request['product'];
-
+        
         $quantity = $request->counter;
-    
-        $cart = Cart::create([
-            'user_id' => $user->id,
-            'product_id' => $product['id'],
-            'quantity' => $quantity
-        ]);
 
-        return response()->json(['cart' => $cart]);
+        $cartInfo = DB::table('carts')
+        ->select('carts.quantity')
+        ->where('user_id', '=', $user->id)
+        ->where('product_id', '=', $product['id'])
+        ->first();
+
+        if($cartInfo==null){
+            Cart::insert([
+                'user_id' => $user->id,
+                'product_id' => $product['id'],
+                'quantity' => $quantity
+            ]);
+        }
+
+        else{
+            Cart::where('product_id', '=', $product['id'])
+            ->where('user_id', '=', $user->id) 
+            ->update([
+                'quantity' => $cartInfo->quantity + $quantity
+            ]);
+        }
+
+        return response()->json(['status' => 20000]);
     }
 
     /**

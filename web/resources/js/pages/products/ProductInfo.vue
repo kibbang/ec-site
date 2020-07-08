@@ -3,14 +3,16 @@
     <div>
       <h1>Product Information</h1>
       <ul style="list-style: none">
-        <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />
+        <img class="w-100" v-for="product_image in product.product_image" :key="product_image.id" 
+        :src="product_image.image_url" width="150px" height="100px"  alt />
         <li>Product Name: {{ product.name }}</li>
         <li>Product Price($): {{ product.price }}</li>
         <li>Product Description: {{ product.description }}</li>
         <router-link v-if="isAdmin" class="btn btn-primary" :to="`/product/${product.id}/edit`">Update</router-link>
         <span v-if="!isAdmin">
           <button @click="goToAccountView" class="btn btn-primary">Buy</button>
-          <button v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
+          <button v-if="isLogin" v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
+          <button v-else @click="userCheck" class="btn btn-danger">Add Cart</button>
           <p> Added Cart Quantity: {{ counter }} </p>
           <p> Total Price($): {{ counter * product.price }} </p> 
           <br>
@@ -31,6 +33,9 @@
     computed: {
       isAdmin(){
         return this.$store.getters['auth/admin']
+      },
+      isLogin(){
+        return this.$store.getters['auth/check']
       }
     },
     data(){
@@ -66,6 +71,10 @@
       goToAccountView(){
         // fromView cartView or productInfoView
         this.$router.push({name:'accountProduct',params:{fromView:'productInfoView'}})
+      },
+      //ログインしていないユーザーのカート使用防止処理
+      userCheck(){
+        alert('You must login first');
       }
     }
   }
