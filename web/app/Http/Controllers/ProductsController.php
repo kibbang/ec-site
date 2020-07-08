@@ -19,16 +19,23 @@ class ProductsController extends Controller
     public function productRegister(Request $request)
     {
         $data = $request->all();
-        //\Log::debug($data);
 
         try
         {
             DB::transaction(function () use($data) {
+
                 $product = Product::create($data['product']);
-                $data['product_image']['product_id'] = $product->id;
-                ProductImage::create($data['product_image']);
+
+                foreach ($data['image_url'] as $image_url) {
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $image_url
+                    ]);
+                }
             });
         } 
+        
         catch (Exception $e)
         { 
             throw $e;
@@ -65,68 +72,27 @@ class ProductsController extends Controller
      */
     public function imageUpload(Request $request)
     {
-        
-        $file_info = $request['file_info'];  
-         
-        //$file_name = $request->file->getClientOriginalName();
-        foreach($file_info as $file)
-        {
-            $file_name = $file->getClientOriginalName();
-            $file->storeAs('',$file_name);
-            
-        }
-        dd($file_name);
-       // \Log::debug(getClientOriginalName());
-        //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
-        $storage = 'public';
-        $base64Context = $request['file_info'];
-        dd($request->all());
-        \Log::debug($request->file);
-        $dir = '/';
-
         try 
         {           
-            preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
-            foreach($matches as $base64Context){
-                $extension = $matches[1];
-                $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
-                $img = str_replace(' ', '+', $img);
-                $fileData = base64_decode($img);
-    
-                $dir = rtrim($dir, '/').'/';
-                $fileName = md5($img);
-                $path = $dir.$fileName.'.'.$extension;
-    
-                Storage::disk($storage)->put($path, $fileData);
-                
+            $file_info = $request['file_info'];
+            $url = [];  
+        
+            foreach($file_info as $file)
+            {   
+                $file_name = $file->getClientOriginalName();
+
+                $file->storeAs('',$file_name);
+
+                $url[] = Storage::disk('public')->url($file_name);
             }
-            // $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
-            // $img = str_replace(' ', '+', $img);
-            // $fileData = base64_decode($img);
-
-            // $dir = rtrim($dir, '/').'/';
-            // $fileName = md5($img);
-            // $path = $dir.$fileName.'.'.$extension;
-
-            // Storage::disk($storage)->put($path, $fileData);
-            
-            return response()->json(['image_url' => Storage::disk('public')->url($path)]);
         }
+
         catch (Exception $e)
         {
             throw $e;
         }
 
-        // $file_data = $request['file_info'];
-        // $data = base64_decode($file_data);
-        // $file_name = 'image_' . time() . '.jpg';
-
-        // \Log::debug(finfo_buffer(finfo_open(), $data, FILEINFO_EXTENSION));
-        // if ($file_data != "") {
-        //     Storage::disk('public')->put($file_name, $data);
-        // }
-        
-        // return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
+        return response()->json(['image_url' => $url]);
     }
     
 
