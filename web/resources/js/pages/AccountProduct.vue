@@ -74,7 +74,7 @@
         this.counter--
       }         
     },
-    async created(){
+    async mounted(){
       await axios.get('/api/product/list/'+this.id)
       .then(response=>{
         this.product = response.data.product
@@ -83,8 +83,9 @@
       .catch(error => console.log(error)); 
       
       await axios.get('/api/card')
-      .then(response=>{
+      .then((response) => {
         this.cards = response.data.cards
+        console.log(response)
       }) 
       .catch(error => console.log(error));
     }

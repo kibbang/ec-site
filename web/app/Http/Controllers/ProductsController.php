@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\ProductImage;
 use DB;
+use Storage;
 
 class ProductsController extends Controller
 {
+
     /**
      * 商品登録
      * 

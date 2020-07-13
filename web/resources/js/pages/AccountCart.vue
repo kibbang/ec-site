@@ -69,7 +69,7 @@
         });             
       }
     },
-    async created(){
+    async mounted(){
       await axios.get('/api/cart')
       .then(response=>{
         this.carts = response.data.carts
@@ -79,7 +79,8 @@
 
       await axios.get('/api/card')
         .then(response=>{
-          this.cards = response.data.cards
+          this.cards = response.cards
+          console.log(response)
         }) 
         .catch(error => console.log(error));
       }     
