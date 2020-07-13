@@ -37,8 +37,13 @@ class CardController extends Controller
      */
     public function cardInfo(Request $request)
     {
+        $cardInfo = [];
         $cards = $this->card->viewCard();
+        foreach($cards as $card)
+        {
+           $cardInfo[] = $card->toArray();
+        }
         
-        return response()->json(['cards' => $cards]);
+        return response()->json(['cards' => $cardInfo]);
     }
 }

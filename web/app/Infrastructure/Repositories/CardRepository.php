@@ -45,7 +45,7 @@ class CardRepository implements ICardRepository
                 $cardInfo->security_code
            );
 
-           $cards[] = $card->toArray();
+           $cards[] = $card;
         }
         return $cards;
         

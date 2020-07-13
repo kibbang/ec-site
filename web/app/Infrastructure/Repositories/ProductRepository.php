@@ -34,26 +34,5 @@ class ProductRepository implements IProductRepository
         }
     }
 
-    public function imageUpload()
-    {
-        try 
-        {           
-            $file_info = $request['file_info'];
-            $url = [];  
-        
-            foreach($file_info as $file)
-            {   
-                $file_name = $file->getClientOriginalName();
-
-                $file->storeAs('',$file_name);
-
-                $url[] = Storage::disk('public')->url($file_name);
-            }
-        }
-
-        catch (Exception $e)
-        {
-            throw $e;
-        }
-    }
+    
 }

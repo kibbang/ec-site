@@ -85,7 +85,6 @@
       await axios.get('/api/card')
       .then((response) => {
         this.cards = response.data.cards
-        console.log(response)
       }) 
       .catch(error => console.log(error));
     }
