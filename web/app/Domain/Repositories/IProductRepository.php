@@ -2,8 +2,6 @@
 
 namespace App\Domain\Repositories;
 
-use App\Product;
-
 interface IProductRepository
 {
     /**
