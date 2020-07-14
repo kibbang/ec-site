@@ -1,14 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Services;
 
-class ProdcutImageService
+use Storage;
+
+class ProductImageService
 {
-    public function imageUpload()
+    /**
+     * 商品の画像登録
+     */
+    public function imageUpload($file_info): array
     {
         try 
-        {           
+        {
             $url = [];  
         
             foreach($file_info as $file)
@@ -25,5 +30,7 @@ class ProdcutImageService
         {
             throw $e;
         }
+
+        return $url;
     }
 }

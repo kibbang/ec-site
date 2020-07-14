@@ -17,7 +17,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Domain\Repositories\ICardRepository::class,
             \App\Infrastructure\Repositories\CardRepository::class,
-            
+
+        );
+        $this->app->bind(
+            \App\Domain\Repositories\IProductRepository::class,
+            \App\Infrastructure\Repositories\ProductRepository::class,
         );
     }
 

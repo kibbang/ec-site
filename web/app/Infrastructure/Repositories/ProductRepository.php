@@ -4,13 +4,15 @@ namespace App\Infrastructure\Repositories;
 
 use App\Product;
 use App\ProductImage;
-use App\Domain\Entities\Product as ProductEntity;
 use App\Domain\Repositories\IProductRepository;
 use DB;
 
 class ProductRepository implements IProductRepository
 {
-    public function productRegister()
+    /**
+     * 商品の登録処理
+     */
+    public function productRegister($data)
     {
         try
         {
@@ -33,6 +35,69 @@ class ProductRepository implements IProductRepository
             throw $e;
         }
     }
-
     
+    /**
+     * 商品の一覧と検索
+     */
+    public function showProductList($data)
+    {
+        $query = Product::select();
+
+        if (!empty($data['search'])) {
+            $query->where('name', 'like', '%' . $data['search'] . '%');
+        }
+        $products = $query->with('productImage')->get();
+
+        return $products;
+    }
+
+    /**
+     * 管理者用の商品の詳細情報ページを表示
+     */
+    public function showProductForAd($id)
+    {
+        $query = Product::select()->where('id', '=', $id);
+        $product = $query->with('productImage')->first();
+
+        return $product;
+    }
+
+    /**
+     * ユーザー用の商品の詳細情報ページ表示
+     */
+    public function showProductForUser($productId)
+    {
+        $query = Product::select()->where('id', '=', $productId);
+        $product = $query->with('productImage')->first();
+
+        return $product;
+    }
+
+    /**
+     * 商品の情報アップデート
+     */
+    public function productUpdate($productInfo)
+    {
+        $product = Product::find($productInfo['id']);
+        
+        $product->update([
+            'name' => $productInfo['name'],
+            'stock' => $productInfo['stock'],
+            'price' => $productInfo['price'],
+            'description' => $productInfo['description']
+        ]);
+
+        return $product;
+    }
+
+    /**
+     * 商品の削除
+     */
+    public function productDelete($id)
+    {   
+        ProductImage::where('product_id', '=', $id)
+        ->delete();
+
+       $product = Product::find($id)->delete();      
+    }
 }

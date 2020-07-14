@@ -37,7 +37,6 @@ class CardRepository implements ICardRepository
 
         foreach ($cardInfos as $cardInfo) {
             # code...
-            \Log::debug($cardInfo);
             $card = new CardEntity(
                 $cardInfo->id,
                 $cardInfo->user_id,
