@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Cart;
-use Auth;
-use DB;
+use App\Domain\Repositories\ICartRepository;
 
 class CartController extends Controller
 {
+    private $cart;
+
+    public function __construct(ICartRepository $cart)
+    {
+        $this->cart = $cart;
+    }
+
     /**
      * 商品をカートに追加
      * 
@@ -17,17 +22,11 @@ class CartController extends Controller
      */
     function addCart(Request $request)
     {        
-        $user = Auth::user();
-        
         $product = $request['product'];
-
+        
         $quantity = $request->counter;
-    
-        $cart = Cart::create([
-            'user_id' => $user->id,
-            'product_id' => $product['id'],
-            'quantity' => $quantity
-        ]);
+
+        $cart = $this->cart->addCart($product, $quantity);
 
         return response()->json(['cart' => $cart]);
     }
@@ -40,15 +39,7 @@ class CartController extends Controller
      */
     function viewCart(Request $request)
     {
-        $user = Auth::user();
-    
-        $cartInfo = DB::table('carts')
-        ->join('products','products.id','carts.product_id')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('carts.*', 'products.name', 'products.price', 'product_images.image_url', 'products.stock')
-        ->where('user_id', '=', $user->id);
-
-        $carts = $cartInfo->get();
+        $carts = $this->cart->viewCart();
 
         return response()->json(['carts'=>$carts]);
     }
@@ -56,14 +47,13 @@ class CartController extends Controller
     /**
      * カートにある商品を削除
      * 
-     * @param \App\Cart $cart
+     * @param int $id
      * @return \Illuminate\Http\Response     
      */
-    function deleteCart(Cart $cart)
+    function deleteCart($id)
     {
-        $cart->delete();
+        $this->cart->deleteCart($id);
 
         return response()->json(['message' => 'delete successfully']);
-
     }
 }

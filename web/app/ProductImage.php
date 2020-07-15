@@ -14,12 +14,13 @@ class ProductImage extends Model
     ];
 
     public function product() 
-        {
-            return $this->belongsTo(Product::class);
-        }
+    {
+        return $this->belongsTo(Product::class);
+    }
+
 
     public function getUrlAttribute()
-      {
+    {
         return asset("storage/product_images/{$this->filename}");
-      }
+    }
 }

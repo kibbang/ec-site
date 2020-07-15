@@ -3,11 +3,11 @@
     <h1>Cart</h1>
     <ul style="list-style: none" v-for="cart in carts" :key="cart.id">
       <li> 
-        <img class="w-100" :src="cart.image_url" width="150px" height="100px"  alt />
-        <p> Product Name: {{ cart.name }} </p>
-        <p> Product Price($): {{ cart.price }} </p>
+        <img class="w-100" :src="cart.product.product_image[0].image_url" width="150px" height="100px"  alt />
+        <p> Product Name: {{ cart.product.name }} </p>
+        <p> Product Price($): {{ cart.product.price }} </p>
         <p> Order Quantity: {{ cart.quantity }} </p>
-        <strong> Total Price($): {{ cart.quantity * cart.price }} </strong>
+        <strong> Total Price($): {{ cart.quantity * cart.product.price }} </strong>
         <br>
         <button class="btn btn-danger" @click="cartDelete(cart.id)">Delete</button>
       </li> 

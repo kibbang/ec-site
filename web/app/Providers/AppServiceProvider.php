@@ -23,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
             \App\Domain\Repositories\IProductRepository::class,
             \App\Infrastructure\Repositories\ProductRepository::class,
         );
+
+        $this->app->bind(
+            \App\Domain\Repositories\ICartRepository::class,
+            \App\Infrastructure\Repositories\CartRepository::class,
+        );
     }
 
     /**
