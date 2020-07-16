@@ -30,27 +30,27 @@ class Product
         $this->description = $description;
     }
 
-    public function shop_id(): int
+    public function getShopId(): int
     {
         return $this->shop_id;
     }
 
-    public function name(): string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function price(): int
+    public function getPrice(): int
     {
         return $this->price;
     }
 
-    public function stock(): int
+    public function getStock(): int
     {
         return $this->stock;
     }
 
-    public function description(): string
+    public function getDescription(): string
     {
         return $this->description;
     }

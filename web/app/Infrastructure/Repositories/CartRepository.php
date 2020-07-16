@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repositories;
 
+use DB;
 use App\Cart;
 use Auth;
 use App\Domain\Repositories\ICartRepository;
@@ -10,21 +11,38 @@ class CartRepository implements ICartRepository
 {
     /**
      * カートに品物を追加
+     * @param array $product
+     * @param int $quantity
      */
     public function addCart($product, $quantity)
     {
         $user = Auth::user();
 
-        $cart = Cart::create([
-            'user_id' => $user->id,
-            'product_id' => $product['id'],
-            'quantity' => $quantity
-        ]);
+        $cartInfo = DB::table('carts')
+        ->select('carts.quantity')
+        ->where('user_id', '=', $user->id)
+        ->where('product_id', '=', $product['id'])
+        ->first();
 
-        return $cart;
+        if($cartInfo==null){
+            Cart::insert([
+                'user_id' => $user->id,
+                'product_id' => $product['id'],
+                'quantity' => $quantity
+            ]);
+        }
+
+        else{
+            Cart::where('product_id', '=', $product['id'])
+            ->where('user_id', '=', $user->id) 
+            ->update([
+                'quantity' => $cartInfo->quantity + $quantity
+            ]);
+        }
     }
     /**
      * ユーザーのカートにある商品を表示（代表画像1枚表示）
+     * @return array $carts
      */
     public function viewCart()
     {
@@ -39,6 +57,7 @@ class CartRepository implements ICartRepository
 
     /**
      * カートにある商品を削除
+     * @param int $id
      */
     public function deleteCart($id)
     {

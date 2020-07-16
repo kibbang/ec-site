@@ -6,7 +6,8 @@ interface ICartRepository
 {
     /**
      * カートに品物を追加するため
-     * @param $product, $quantity
+     * @param  array $product
+     * @param  int $quantity
      */
     public function addCart($product, $quantity);
 
@@ -17,7 +18,7 @@ interface ICartRepository
 
     /**
      * カートにある商品を削除するため
-     * @param $id
+     * @param int $id
      */
     public function deleteCart($id);
 }

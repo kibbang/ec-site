@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use App\Product;
-use App\Cart;
-use Auth;
+use App\Domain\Repositories\IAccountRepository;
 
 class AccountController extends Controller
 {
+    private $account;
+    public function __construct(IAccountRepository $account)
+    {
+        $this->account = $account;
+    }
+
     /**
      * 商品をカートに入れずに直接購入する場合実行
      * 
@@ -19,22 +22,9 @@ class AccountController extends Controller
      */
     public function directBuy(Request $request, $id) 
     {        
-        $counter = $request->counter;        
-        $product = Product::find($id);
-                
-        try
-        {
-            DB::transaction(function () use($product,$counter){
-                $product->update([
-                    'stock' => $product->stock - $counter
-                ]);                
-            });
-        }
+        $counter = $request->counter;
 
-        catch (Exception $e)
-        {
-            throw $e;
-        }
+        $this->account->directBuy($counter, $id);
 
         return response()->json(['status' => 20000]);
     }
@@ -47,36 +37,7 @@ class AccountController extends Controller
      */
     public function cartBuy(Request $request)
     {
-        $user = Auth::user();
-        $cartInfo = DB::table('carts')
-        ->join('products','products.id','carts.product_id')
-        ->select('carts.quantity','carts.product_id','products.stock')
-        ->where('user_id', '=', $user->id)
-        ->get();
-        
-        try
-        {
-            DB::transaction(function () use($cartInfo,$user)
-            {
-                foreach($cartInfo as $key => $orderInfo)
-                {                       
-                    $newStock = $orderInfo->stock - $orderInfo->quantity;
-                        
-                    Product::where('products.id', '=', $orderInfo->product_id )
-                    ->update([
-                        'stock' =>  $newStock
-                    ]);                            
-                }   
-                DB::table('carts')
-                ->where('user_id', '=', $user->id)
-                ->delete();                                  
-            });
-        }
-
-        catch (Exception $e)
-        {
-            throw $e;
-        }
+        $this->account->cartBuy();
 
         return response()->json(['status' => 20000]);
     }

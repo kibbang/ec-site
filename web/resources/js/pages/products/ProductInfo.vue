@@ -12,7 +12,8 @@
         <button v-if="isAdmin" class="btn btn-danger" @click="productDelete(product.id)">Delete</button>
         <span v-if="!isAdmin">
           <button @click="goToAccountView" class="btn btn-primary">Buy</button>
-          <button v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
+          <button v-if="isLogin" v-on:click="counter += 1" class="btn btn-danger">Add Cart</button>
+          <button v-else @click="userCheck" class="btn btn-danger">Add Cart</button>
           <p> Added Cart Quantity: {{ counter }} </p>
           <p> Total Price($): {{ counter * product.price }} </p> 
           <br>
@@ -33,6 +34,9 @@
     computed: {
       isAdmin(){
         return this.$store.getters['auth/admin']
+      },
+      isLogin(){
+        return this.$store.getters['auth/check']
       }
     },
     data(){
@@ -78,7 +82,12 @@
         })
         this.$router.push({ name:'productAdmin' })
         .catch(error => console.log(error));
-			}
+      },
+      
+      //ログインしていないユーザーのカート使用防止処理
+      userCheck(){
+        alert('You must login first');
+      }
     }
   }
 </script>

@@ -26,9 +26,9 @@ class CartController extends Controller
         
         $quantity = $request->counter;
 
-        $cart = $this->cart->addCart($product, $quantity);
+        $this->cart->addCart($product, $quantity);
 
-        return response()->json(['cart' => $cart]);
+        return response()->json(['status' => 20000]);
     }
 
     /**

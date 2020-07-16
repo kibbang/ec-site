@@ -3,7 +3,7 @@
     <h1>Account</h1>
     <div>
       <ul style="list-style:none">  
-        <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />      
+        <img class="w-100" :src="product.product_image[0].image_url" width="150px" height="100px"  alt />      
         <li>Product Name: {{ product.name }} </li>
         <li>Product Price: {{ product.price }} </li>
         <li>Order Quantity: {{ counter }} </li>

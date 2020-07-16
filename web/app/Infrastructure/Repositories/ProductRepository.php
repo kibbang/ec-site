@@ -11,6 +11,7 @@ class ProductRepository implements IProductRepository
 {
     /**
      * 商品の登録処理
+     * @param array $data
      */
     public function productRegister($data)
     {
@@ -38,6 +39,8 @@ class ProductRepository implements IProductRepository
     
     /**
      * 商品の一覧と検索
+     * @param array $data
+     * @return array $products
      */
     public function showProductList($data)
     {
@@ -53,6 +56,8 @@ class ProductRepository implements IProductRepository
 
     /**
      * 管理者用の商品の詳細情報ページを表示
+     * @param int $id
+     * @return array $product
      */
     public function showProductForAd($id)
     {
@@ -64,6 +69,8 @@ class ProductRepository implements IProductRepository
 
     /**
      * ユーザー用の商品の詳細情報ページ表示
+     * @param int $productId
+     * @return array $product
      */
     public function showProductForUser($productId)
     {
@@ -75,6 +82,8 @@ class ProductRepository implements IProductRepository
 
     /**
      * 商品の情報アップデート
+     * @param array $productInfo
+     * @return object $product
      */
     public function productUpdate($productInfo)
     {
@@ -92,6 +101,7 @@ class ProductRepository implements IProductRepository
 
     /**
      * 商品の削除
+     * @param int $id
      */
     public function productDelete($id)
     {   

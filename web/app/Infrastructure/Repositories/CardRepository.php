@@ -5,13 +5,14 @@ namespace App\Infrastructure\Repositories;
 use App\Card;
 use App\Domain\Entities\Card as CardEntity;
 use Auth;
-use DB;
 use App\Domain\Repositories\ICardRepository;
 
 class CardRepository implements ICardRepository
 {
     /**
      * カード登録
+     * @param array $data
+     * @return object $card
      */
     public function cardRegister($data): Card
     {
@@ -22,11 +23,13 @@ class CardRepository implements ICardRepository
             'number' => $data['number'],
             'security_code' =>$data['security_code']
         ]);
+
         return $card;
     }
 
     /**
      * ユーザーのカード情報取得
+     * @return array cards
      */
     public function viewCard() : array
     {

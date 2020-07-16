@@ -9,7 +9,7 @@ interface ICardRepository
     /**
      * カード登録処理を行う関数
      * 
-     * @param $data
+     * @param array $data
      * @return Card
      */
     public function cardRegister($data): Card;

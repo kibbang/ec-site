@@ -38,7 +38,7 @@ class ProductsController extends Controller
     public function productList(Request $request)
     {
         $data = $request->all();
-        
+
         $products = $this->product->showProductList($data);
 
         return response()->json(['products' => $products]);

@@ -25,17 +25,17 @@ class Card
     }
    
 
-    public function user_id(): int
+    public function getUserId(): int
     {
         return $this->user_id;
     }
 
-    public function number(): string
+    public function getNumber(): string
     {
         return $this->number;
     }
 
-    public function security_code(): string
+    public function getSecurityCode(): string
     {
         return $this->security_code;
     }
