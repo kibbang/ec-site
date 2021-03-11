@@ -4,12 +4,13 @@
       <h1>Account</h1>
     </div>
     <div>
-      <ul style="list-style: none" v-for="cart in carts" :key="cart.id">
-        <li>
-          <img class="w-100" :src="cart.image_url" width="150px" height="100px"  alt />
-          <p>Product Name: {{ cart.name }}</p>
+      <ul style="list-style: none">
+        <li v-for="cart in carts" :key="cart.id">
+          <img class="w-100" :src="cart.product.product_image[0].image_url"
+           width="150px" height="100px"  alt />
+          <p>Product Name: {{ cart.product.name }}</p>
           <p>Order Quantity: {{ cart.quantity }}</p>
-          <p>Price: {{ cart.price * cart.quantity }}$</p>
+          <p>Price: {{ cart.product.price * cart.quantity }}$</p>
         </li> 
       </ul>
       <strong>Total Price: {{ cartTotal }}$</strong>
@@ -43,7 +44,7 @@
       cartTotal(){
         if(this.fromView=='cartView'){
           return this.carts.reduce((total, cart) => {
-            return total + (cart.price * cart.quantity)
+            return total + (cart.product.price * cart.quantity)
           }, 0)
         }
       }
@@ -69,7 +70,7 @@
         });             
       }
     },
-    async created(){
+    async mounted(){
       await axios.get('/api/cart')
       .then(response=>{
         this.carts = response.data.carts
@@ -78,10 +79,10 @@
       .catch(error => console.log(error));
 
       await axios.get('/api/card')
-        .then(response=>{
-          this.cards = response.data.cards
-        }) 
-        .catch(error => console.log(error));
-      }     
+      .then(response=>{
+        this.cards = response.data.cards
+      }) 
+      .catch(error => console.log(error));
+    }     
   }
 </script>

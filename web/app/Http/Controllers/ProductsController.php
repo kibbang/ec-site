@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
-use App\ProductImage;
-use DB;
+use App\Domain\Repositories\IProductRepository;
 
 class ProductsController extends Controller
 {
+    private $product;
+
+    public function __construct(IProductRepository $product)
+    {
+        $this->product = $product;
+    }
+
     /**
      * 商品登録
      * 
@@ -19,18 +24,7 @@ class ProductsController extends Controller
     {
         $data = $request->all();
 
-        try
-        {
-            DB::transaction(function () use($data) {
-                $product = Product::create($data['product']);
-                $data['product_image']['product_id'] = $product->id;
-                ProductImage::create($data['product_image']);
-            });
-        } 
-        catch (Exception $e)
-        { 
-            throw $e;
-        }
+        $this->product->productRegister($data);
         
         return response()->json(['status' => 200000]);
     
@@ -44,64 +38,10 @@ class ProductsController extends Controller
     public function productList(Request $request)
     {
         $data = $request->all();
-        $query = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url');
-        if (!empty($data['search'])) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-        $products = $query->get();
+
+        $products = $this->product->showProductList($data);
 
         return response()->json(['products' => $products]);
-    }
-
-    /**
-     * 商品画像登録
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function imageUpload(Request $request)
-    {
-        
-        //$file_name = $request->file->getClientOriginalName();
-       // \Log::debug(getClientOriginalName());
-        //$url = request()->file(['file_info'])->storeAs('public/', $file_name);
-        $storage = 'public';
-        $base64Context = $request['file_info'];
-        $dir = '/';
-
-        try 
-        {
-            preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
-            $extension = $matches[1];
-
-            $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
-            $img = str_replace(' ', '+', $img);
-            $fileData = base64_decode($img);
-
-            $dir = rtrim($dir, '/').'/';
-            $fileName = md5($img);
-            $path = $dir.$fileName.'.'.$extension;
-
-            Storage::disk($storage)->put($path, $fileData);
-
-        }
-        catch (Exception $e)
-        {
-            throw $e;
-        }
-
-        // $file_data = $request['file_info'];
-        // $data = base64_decode($file_data);
-        // $file_name = 'image_' . time() . '.jpg';
-
-        // \Log::debug(finfo_buffer(finfo_open(), $data, FILEINFO_EXTENSION));
-        // if ($file_data != "") {
-        //     Storage::disk('public')->put($file_name, $data);
-        // }
-        
-        return response()->json(['image_url' => Storage::disk('public')->url($path)]); 
     }
 
     /**
@@ -111,11 +51,7 @@ class ProductsController extends Controller
      */
     public function productDetail($id)
     {
-        $product = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url')
-        ->where('products.id', $id)
-        ->first();
+        $product = $this->product->showProductForAd($id);
 
         return response()->json(['product' => $product]);
     }
@@ -130,14 +66,7 @@ class ProductsController extends Controller
     {
         $productInfo = $request['product'];
 
-        $product = Product::find($productInfo['id']);
-        
-        $product->update([
-            'name' => $productInfo['name'],
-            'stock' => $productInfo['stock'],
-            'price' => $productInfo['price'],
-            'description' => $productInfo['description']
-        ]);
+        $product = $this->product->productUpdate($productInfo);
 
         return response()->json(['product' => $product]);       
     }
@@ -145,17 +74,27 @@ class ProductsController extends Controller
      * 商品情報の変更のための商品情報の表示
      * 
      * @param \Illuminate\Http\Request $request
-     * @param string $productId
+     * @param int $productId
      * @return \Illuminate\Http\Response
      */
-    public function productInfo(Request $request, string $productId)
+    public function productInfo($productId)
     {
-        $product = DB::table('products')
-        ->join('product_images', 'product_images.product_id', 'products.id')
-        ->select('products.*', 'product_images.image_url')
-        ->where('products.id', $productId)
-        ->first();
+       $product = $this->product->showProductForUser($productId);
         
         return response()->json(['product' => $product]);
     }
+
+
+    /**
+     * 商品の削除機能
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function productDelete($id)
+    {
+        $this->product->productDelete($id);
+
+        return response()->json(['message' => 'delete successfully']);
+    }
+
 }

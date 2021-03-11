@@ -33,15 +33,18 @@ Route::prefix('/product')->group(function() {
 
     Route::get('/list', 'ProductsController@productList');
 
-    Route::post('/imageupload', 'ProductsController@imageUpload');
-
     Route::get('/list/{product}', 'ProductsController@productDetail');
 
     Route::post('/update', 'ProductsController@productUpdate');
 
     Route::get('{product_id}', 'ProductsController@productInfo');
 
+    Route::delete('/list/{product}', 'ProductsController@productDelete');
+
 });
+
+Route::post('/imageupload','ImageController@imageUpload');
+
 
 Route::post('/card', 'CardController@cardRegister');
 

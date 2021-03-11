@@ -4,7 +4,8 @@
       <h1>Product Edit</h1>
       <form>
         <p>Product Id: {{ product.id }} </p>
-        <img class="w-100" :src="product.image_url" width="150px" height="100px"  alt />
+        <img class="w-100" v-for="product_image in product.product_image" :key="product_image.id" 
+        :src="product_image.image_url" width="150px" height="100px"  alt />
         <br>
         <div class="form-group">
           <label for="name">Name:</label>

@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Card;
-use Auth;
-use DB;
+use App\Domain\Repositories\ICardRepository;
 
 class CardController extends Controller
 {
+
+    private $card;
+    public function __construct(ICardRepository $card)
+    {
+        $this->card = $card;
+    }
+    
     /**
      * カード登録
      * 
@@ -17,16 +22,9 @@ class CardController extends Controller
      */
     public function cardRegister(Request $request)
     {
-        
         $data = $request['card'];
-    
-        $user = Auth::user();
 
-        $card = Card::create([
-            'user_id' => $user->id,
-            'number' => $data['number'],
-            'security_code' => $data['security_code']
-        ]);
+        $card = $this->card->cardRegister($data);
 
         return response()->json(['card' => $card]);
     } 
@@ -39,12 +37,13 @@ class CardController extends Controller
      */
     public function cardInfo(Request $request)
     {
-        $user = Auth::user();
-        $cards = DB::table('cards')
-        ->select('cards.number')
-        ->where('user_id', '=', $user->id)
-        ->get();
+        $cardInfo = [];
+        $cards = $this->card->viewCard();
+        foreach($cards as $card)
+        {
+           $cardInfo[] = $card->toArray();
+        }
         
-        return response()->json(['cards' => $cards]);
+        return response()->json(['cards' => $cardInfo]);
     }
 }
